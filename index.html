@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0b6e4f" />
+
+<title>Your Business — Upcycling & Escrow Marketplace</title>
+<style>
+  :root {
+    --emerald: #0b6e4f;
+    --emerald-dark: #074c36;
+    --emerald-light: #e7f6f0;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --bg: #f3f6f5;
+    --card: #ffffff;
+    --ink: #0f172a;
+    --muted: #526071;
+    --border: #e2e8f0;
+    --danger: #b91c1c;
+    --danger-light: #fee2e2;
+    --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  body { background: var(--bg); color: var(--ink); line-height: 1.5; padding-bottom: 92px; }
+
+  header {
+    background: linear-gradient(135deg, var(--emerald-dark), var(--emerald));
+    color: #fff;
+    padding: 14px 16px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 4px 16px rgba(7, 76, 54, 0.22);
+  }
+  .top-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .logo {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28);
+    display: grid; place-items: center; font-size: 20px;
+  }
+  .brand h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
+  .brand p { font-size: 11.5px; opacity: 0.9; }
+  .selectors { display: flex; gap: 6px; align-items: center; }
+  html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
+  button, a, select, input, textarea { touch-action: manipulation; }
+  select, input, textarea {
+    border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px;
+    font-size: 16px; background: #fff; color: var(--ink); width: 100%;
+  }
+  .notif-row {
+    border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-top: 8px; background: #f8fafc;
+  }
+  header select {
+    background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.3);
+    padding: 6px 8px; font-size: 12px; font-weight: 600; width: auto; cursor: pointer;
+  }
+  header select option { color: var(--ink); background: #fff; }
+
+  .sub-bar {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.16);
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .pill-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    background: rgba(255,255,255,0.14); padding: 4px 9px; border-radius: 999px; font-weight: 600;
+  }
+  .btn {
+    border: none; border-radius: 10px; padding: 9px 14px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: transform 0.08s ease, opacity 0.15s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
+  .btn-primary { background: var(--emerald); color: #fff; }
+  .btn-amber { background: var(--amber); color: #fff; }
+  .btn-light { background: #fff; color: var(--ink); border: 1px solid var(--border); }
+  .btn-ghost-white { background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.28); }
+  .btn-outline { background: transparent; color: var(--emerald); border: 1px solid var(--emerald); }
+
+  .container { max-width: 780px; margin: 14px auto; padding: 0 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow);
+  }
+  .card-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .muted { color: var(--muted); font-size: 12.5px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .badge-green { background: var(--emerald-light); color: var(--emerald-dark); }
+  .badge-amber { background: var(--amber-light); color: #92400e; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 4px; margin-top: 8px; }
+
+  .photo-drop {
+    border: 2px dashed #94a3b8; border-radius: 14px; padding: 16px; text-align: center;
+    background: #f8fafc; margin-top: 8px; cursor: pointer;
+  }
+  .photo-drop:hover { border-color: var(--emerald); background: var(--emerald-light); }
+  .preview-img {
+    width: 100%; max-height: 240px; object-fit: cover; border-radius: 12px;
+    margin-top: 10px; border: 1px solid var(--border); display: none;
+  }
+
+  .paywall-box {
+    background: #fffbeb; border: 1px solid #fcd34d; border-radius: 14px; padding: 14px; margin-top: 10px;
+  }
+
+  .guide-box {
+    background: #f6fdf9; border: 1px solid #bbf7d0; border-radius: 14px; padding: 14px; margin-top: 12px;
+  }
+  .steps-list { margin: 8px 0 0 18px; }
+  .steps-list li { margin-bottom: 7px; font-size: 13.5px; }
+
+  .qa-box { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; }
+  .quick-q { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+  .answer-bubble { background: #f1f5f9; border-radius: 12px; padding: 10px 12px; margin-top: 8px; font-size: 13px; }
+
+  .item-card {
+    border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 12px; background: #fff;
+  }
+  .item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .item-thumb {
+    width: 72px; height: 72px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0;
+  }
+  .price-tag { font-size: 16px; font-weight: 800; color: var(--emerald-dark); margin-top: 4px; }
+  .checkout-box {
+    margin-top: 10px; padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid var(--border);
+  }
+  .chat-panel {
+    margin-top: 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 10px;
+  }
+  .chat-log { max-height: 170px; overflow-y: auto; margin-bottom: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .msg { padding: 7px 10px; border-radius: 10px; font-size: 12.5px; max-width: 85%; }
+  .msg-buyer { background: var(--emerald-light); color: var(--ink); align-self: flex-end; }
+  .msg-seller { background: #e2e8f0; color: var(--ink); align-self: flex-start; }
+
+  .order-row, .creator-row {
+    border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 10px; background: #fcfdfd;
+  }
+
+  .stat-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+  .stat-val { font-size: 18px; font-weight: 800; color: var(--emerald-dark); margin-top: 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 8px; }
+  th, td { padding: 8px; border-bottom: 1px solid var(--border); text-align: left; }
+  th { background: #f8fafc; font-weight: 700; }
+
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(15,23,42,0.55); display: none;
+    align-items: center; justify-content: center; z-index: 40; padding: 14px;
+  }
+  .modal {
+    background: #fff; border-radius: 18px; max-width: 480px; width: 100%;
+    padding: 18px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  }
+
+  nav {
+    position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+    border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr);
+    z-index: 25; box-shadow: 0 -4px 16px rgba(15,23,42,0.06);
+  }
+  nav button {
+    background: none; border: none; padding: 9px 6px; font-size: 11.5px; font-weight: 600;
+    color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  nav button.active { color: var(--emerald); background: #f0fdf4; }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+  .toast {
+    position: fixed; top: 76px; right: 14px; background: var(--emerald-dark); color: #fff;
+    padding: 10px 14px; border-radius: 12px; font-size: 12.5px; font-weight: 600;
+    z-index: 50; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top-row">
+    <div class="brand">
+      <div class="logo">♻️</div>
+      <div>
+        <h1 id="appTitle">Your Business</h1>
+        <p id="appTagline">Photo → Guaranteed Benefit &amp; Pretty Design</p>
+      </div>
+    </div>
+    <div class="selectors">
+      <select id="countrySelect" aria-label="Country & Currency">
+        <option value="PK">🇵🇰 PKR</option>
+        <option value="IN">🇮🇳 INR</option>
+        <option value="US">🌍 USD</option>
+      </select>
+      <select id="langSelect" aria-label="Language">
+        <option value="en">EN</option>
+        <option value="ur">اردو</option>
+        <option value="hi">हिंदी</option>
+      </select>
+    </div>
+  </div>
+  <div class="sub-bar">
+    <div class="pill-row">
+      <span class="pill" id="activeUserPill">User: Platform Owner (Owner)</span>
+      <span class="pill" id="rulesPill">Escrow • 20% Fee • 50% Ref</span>
+      <button type="button" class="btn btn-sm btn-ghost-white" id="openAlertsBtn">🔔 Alerts (<span id="alertCountBadge">0</span>)</button>
+    </div>
+    <div class="pill-row">
+      <select id="quickAccountSwitch" aria-label="Switch Role View" style="width:auto; padding:5px 8px; font-size:11.5px; font-weight:600; background:rgba(255,255,255,0.18); color:#fff; border-color:rgba(255,255,255,0.35);"></select>
+      <button type="button" class="btn btn-sm btn-ghost-white" id="openOnboardingBtn">+ New User Setup</button>
+      <button type="button" class="btn btn-sm btn-ghost-white" id="resetDemoBtn">Reset</button>
+    </div>
+  </div>
+</header>
+
+<div class="toast" id="toast"></div>
+<div id="liveAlertBanner" style="display:none; max-width:780px; margin:10px auto 0; padding:0 14px;">
+  <div style="background:#fef3c7; border:1px solid #f59e0b; color:#78350f; border-radius:12px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:13px;">
+    <div><strong id="liveAlertTitle">Alert</strong> — <span id="liveAlertDetail"></span></div>
+    <div style="display:flex; gap:6px;">
+      <button type="button" class="btn btn-sm btn-amber" id="bannerOpenAlertsBtn">View &amp; Fix</button>
+      <button type="button" class="btn btn-sm btn-light" id="bannerDismissBtn">✕</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- TAB 1: AI & POST -->
+  <section class="tab-pane active" id="tab-ai">
+    <div class="card">
+      <div class="card-title">
+        <span id="aiCardHeading">Snap or Upload Any Item Photo</span>
+        <span class="badge badge-green" id="benefitBadge">Zero Waste • Guaranteed Benefit</span>
+      </div>
+      <p class="muted" id="aiCardSub">No "what item is this" list needed. Just upload a photo—every item gets a practical repair or upcycle benefit and easy steps for a pretty design.</p>
+
+      <div class="photo-drop" id="photoDrop">
+        <input type="file" id="photoInput" accept="image/*" style="display:none;" />
+        <div style="font-size: 26px;">📸</div>
+        <div style="font-weight: 700; font-size: 13.5px; margin-top: 4px;" id="dropLabel">Tap to Take / Upload Photo</div>
+        <div class="muted" id="dropHint">Or choose a sample photo below to test right away</div>
+      </div>
+
+      <div class="quick-q" style="margin-top: 10px;">
+        <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="jar">🫙 Glass Jar &amp; Scrap</button>
+        <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="chair">🪑 Worn Chair / Wood</button>
+        <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="denim">👖 Old Jeans / Fabric</button>
+      </div>
+
+      <img id="photoPreview" class="preview-img" alt="Uploaded item preview" />
+
+      <div class="grid-2" style="margin-top: 8px;">
+        <div>
+          <label id="titleInputLabel">Listing Title (Optional — auto-suggested if blank)</label>
+          <input type="text" id="itemTitleInput" placeholder="e.g., Upcycled Garden Lantern" />
+        </div>
+        <div>
+          <label id="priceInputLabel">Listing Price (Optional — for Bazaar post)</label>
+          <input type="number" id="itemPriceInput" placeholder="e.g., 1500" min="1" />
+        </div>
+      </div>
+
+      <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+        <button type="button" class="btn btn-primary" id="generateGuideBtn">✨ Get Benefit &amp; Pretty Design Guide</button>
+        <button type="button" class="btn btn-outline" id="postToBazaarBtn">🛍️ Post Item to Bazaar</button>
+      </div>
+
+      <div class="paywall-box" id="paywallBox" style="display:none;">
+        <div style="font-weight: 700; font-size: 14px;">🔒 Unlock AI Guide &amp; Bazaar Posting</div>
+        <p class="muted" style="margin-top: 4px;">Choose a plan or pay once to unlock full repair/upcycling steps and post items. Creators earn from referrals &amp; video shares.</p>
+        <div class="grid-2" style="margin-top: 8px;">
+          <div>
+            <label>Plan / Payment Option</label>
+            <select id="planSelect"></select>
+          </div>
+          <div>
+            <label>Payment Method</label>
+            <select id="payMethodSelect"></select>
+          </div>
+        </div>
+        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-amber" id="unlockPayBtn">💳 Pay &amp; Unlock Now</button>
+          <button type="button" class="btn btn-sm btn-light" id="jumpOwnerFreeBtn">👑 Owner Tab</button>
+        </div>
+      </div>
+
+      <div class="guide-box" id="guideBox" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+          <h3 style="font-size: 15px; font-weight: 800;" id="guideTitle"></h3>
+          <span class="badge badge-green" id="guideBenefitTag"></span>
+        </div>
+        <p style="margin-top: 8px; font-size: 13.5px;" id="guideBenefitText"></p>
+        <div style="font-weight: 700; font-size: 13px; margin-top: 10px;" id="stepsHeading"></div>
+        <ol class="steps-list" id="guideStepsList"></ol>
+
+        <div class="qa-box">
+          <div style="font-weight: 700; font-size: 13px;" id="qaHeading">💬 Ask Anything Else About This Item or Design</div>
+          <div class="quick-q">
+            <button type="button" class="btn btn-sm btn-light quick-ask" data-q="color">🎨 Best colors?</button>
+            <button type="button" class="btn btn-sm btn-light quick-ask" data-q="tools">🛠️ No special tools?</button>
+            <button type="button" class="btn btn-sm btn-light quick-ask" data-q="sell">💰 How to price &amp; sell?</button>
+          </div>
+          <div style="display:flex; gap: 8px;">
+            <input type="text" id="followUpInput" placeholder="Ask a question about repair, paint, glue, or design..." />
+            <button type="button" class="btn btn-sm btn-primary" id="askFollowUpBtn">Ask</button>
+          </div>
+          <div id="followUpAnswers"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: BAZAAR, BUYER ORDERS & CHAT -->
+  <section class="tab-pane" id="tab-bazaar">
+    <div class="card">
+      <div class="card-title">
+        <span id="bazaarTitle">Upcycled Bazaar, Buyer Checkout &amp; Seller Chat</span>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-sm btn-light" id="toggleSavedFilterBtn">❤️ Saved (<span id="savedCount">0</span>)</button>
+          <button type="button" class="btn btn-sm btn-primary" id="quickAddListingBtn">+ Post Item</button>
+        </div>
+      </div>
+      <p class="muted" id="bazaarSub">Buyers can always buy items in escrow without subscription lock, save favorites, chat with sellers, and confirm on-time or late delivery.</p>
+
+      <div id="quickPostForm" style="display:none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+        <div class="grid-2">
+          <div>
+            <label>Item Title</label>
+            <input type="text" id="newListTitle" placeholder="e.g., Hand-Painted Denim Tote" />
+          </div>
+          <div>
+            <label>Price</label>
+            <input type="number" id="newListPrice" placeholder="1200" min="1" />
+          </div>
+        </div>
+        <label>Practical Benefit / Description</label>
+        <input type="text" id="newListDesc" placeholder="Sturdy everyday bag made cleanly with neat stitching & trim." />
+        <div style="margin-top: 10px; display:flex; gap:8px;">
+          <button type="button" class="btn btn-sm btn-primary" id="saveQuickListingBtn">Publish Listing</button>
+          <button type="button" class="btn btn-sm btn-light" id="cancelQuickListingBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="bazaarList"></div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>📦 Buyer Orders &amp; Delivery Confirmation</span>
+        <span class="badge badge-green">Escrow Tracker</span>
+      </div>
+      <p class="muted">Confirm delivery on time or mark late delivery to apply the automatic buyer refund and release wallet payouts.</p>
+      <div id="buyerOrdersList"></div>
+    </div>
+  </section>
+
+  <!-- TAB 3: WALLETS, CREATORS & WITHDRAW -->
+  <section class="tab-pane" id="tab-wallets">
+    <div class="card">
+      <div class="card-title">
+        <span id="walletHeading">Wallets &amp; Earnings</span>
+        <span class="badge badge-green">Instant Ledger</span>
+      </div>
+      <p class="muted" id="walletSub">Track saved earnings, record payouts you send to video creators, and withdraw balances.</p>
+
+      <div class="grid-3" style="margin-top: 12px;" id="walletSummaryCards"></div>
+
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Account</th>
+              <th>Role</th>
+              <th>Ref Code</th>
+              <th>Earned</th>
+              <th>Withdrawn / Sent</th>
+              <th>Available</th>
+            </tr>
+          </thead>
+          <tbody id="walletTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" id="creatorEarningsCard">
+      <div class="card-title">
+        <span>🎬 Video Creators Earnings (Saved &amp; Sent by You)</span>
+        <span class="badge badge-green">No App Login Needed for Creator</span>
+      </div>
+      <p class="muted">Har creator aur seller ka hisab app khud time ke hisab se auto-calculate karti hai—aap ne sirf <strong>Send to Creator</strong> dabana hai aur paise send karne hain.</p>
+
+      <div class="grid-2" style="margin-top: 8px;">
+        <div>
+          <label>Creator Referral Code (For Videos)</label>
+          <input type="text" id="creatorRefCodeDisplay" readonly />
+        </div>
+        <div>
+          <label>Creator Invite / Share Text</label>
+          <input type="text" id="creatorInviteText" readonly />
+        </div>
+      </div>
+      <div style="margin-top: 8px;">
+        <button type="button" class="btn btn-sm btn-light" id="copyCreatorInviteBtn">📋 Copy Creator Code &amp; Invite</button>
+      </div>
+
+      <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+        <div style="font-weight: 700; font-size: 13px;">Add / Save Video Creator &amp; Earnings</div>
+        <div class="grid-2">
+          <div>
+            <label>Video Creator Name *</label>
+            <input type="text" id="vcNameInput" placeholder="e.g., Usman Videos" />
+          </div>
+          <div>
+            <label>Payout Method &amp; Account (JazzCash / EasyPaisa / Bank / UPI / PayPal)</label>
+            <input type="text" id="vcPayoutInput" placeholder="e.g., JazzCash 0300-5551234" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label>Auto Rate Per Day (Time-Based Earning)</label>
+            <input type="number" id="vcDailyRateInput" min="0" placeholder="e.g., 250" />
+          </div>
+          <div>
+            <label>Initial / Bonus Earned Amount (Optional)</label>
+            <input type="number" id="vcEarnInput" min="0" placeholder="e.g., 500" />
+          </div>
+        </div>
+        <div>
+          <label>Video / Campaign Note (Optional)</label>
+          <input type="text" id="vcNoteInput" placeholder="e.g., TikTok & Reel promo #1" />
+        </div>
+        <div style="margin-top: 10px;">
+          <button type="button" class="btn btn-sm btn-primary" id="saveVideoCreatorBtn">💾 Save Creator &amp; Add Earnings</button>
+        </div>
+      </div>
+
+      <div id="videoCreatorsList" style="margin-top: 10px;"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💸 Withdraw Earnings</div>
+      <div class="grid-2">
+        <div>
+          <label>Select Wallet Account</label>
+          <select id="withdrawAccountSelect"></select>
+        </div>
+        <div>
+          <label>Payout Method (Country-Matched)</label>
+          <select id="withdrawMethodSelect"></select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label id="withdrawDestLabel">Account / Mobile / IBAN / UPI / PayPal</label>
+          <input type="text" id="withdrawDestInput" placeholder="Enter payout account or mobile number" />
+        </div>
+        <div>
+          <label>Amount to Withdraw</label>
+          <input type="number" id="withdrawAmountInput" min="1" placeholder="e.g., 150" />
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <button type="button" class="btn btn-primary" id="submitWithdrawBtn">Request Withdrawal</button>
+      </div>
+
+      <div id="withdrawHistory" style="margin-top: 14px;"></div>
+    </div>
+  </section>
+
+  <!-- TAB 4: OWNER PANEL -->
+  <section class="tab-pane" id="tab-owner">
+    <div id="ownerLockedNotice" class="card" style="display:none; border-color:#fcd34d; background:#fffbeb;">
+      <div class="card-title">
+        <span>🔒 Owner Panel Restricted to Platform Owner</span>
+        <span class="badge badge-amber">Role Protected</span>
+      </div>
+      <p class="muted" style="margin-top:4px;">Regular users, sellers, buyers, and creators do not see or edit Owner settings. Select <strong>View as: Owner (Platform Owner)</strong> in the top bar to open Owner settings.</p>
+    </div>
+
+    <div class="card" id="ownerControlsCard">
+      <div class="card-title">
+        <span>👑 Owner Controls &amp; Live Parameters</span>
+        <span class="badge badge-amber">Owner Only</span>
+      </div>
+      <p class="muted">As Owner, you can keep your own access 100% free and adjust subscription prices, commission rates, creator share, and late delivery refunds anytime.</p>
+
+      <div style="margin-top: 12px; display:flex; align-items:center; justify-content:space-between; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid var(--border);">
+        <div>
+          <div style="font-weight: 700; font-size: 13.5px;">Owner Free Access (Bypass Paywall)</div>
+          <div class="muted">Keep AI &amp; Bazaar posting completely free for you as the platform owner.</div>
+        </div>
+        <input type="checkbox" id="ownerFreeToggle" style="width:20px; height:20px; cursor:pointer;" checked />
+      </div>
+
+      <div class="grid-2" style="margin-top: 8px;">
+        <div>
+          <label>Weekly Subscription Fee</label>
+          <input type="number" id="cfgWeeklyFee" min="1" />
+        </div>
+        <div>
+          <label>Monthly Subscription Fee</label>
+          <input type="number" id="cfgMonthlyFee" min="1" />
+        </div>
+        <div>
+          <label>Platform Commission (%)</label>
+          <input type="number" id="cfgCommPct" min="0" max="80" />
+        </div>
+        <div>
+          <label>Creator Referral Share (%)</label>
+          <input type="number" id="cfgCreatorPct" min="0" max="100" />
+        </div>
+        <div>
+          <label>Late Delivery Buyer Refund (%)</label>
+          <input type="number" id="cfgLatePct" min="0" max="50" />
+        </div>
+        <div>
+          <label>Default Creator Code for New Users</label>
+          <input type="text" id="cfgDefaultRef" />
+        </div>
+      </div>
+
+      <div style="margin-top: 12px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn btn-primary" id="saveOwnerConfigBtn">Save Owner Settings</button>
+        <button type="button" class="btn btn-light" id="restoreDefaultConfigBtn">Restore Defaults</button>
+      </div>
+    </div>
+
+    <div class="card" id="notificationsCard">
+      <div class="card-title">
+        <span>🔔 Notifications (Updates, Changes &amp; Issues)</span>
+        <button type="button" class="btn btn-sm btn-light" id="clearAlertsBtn">Clear Alerts</button>
+      </div>
+      <p class="muted">Jab bhi app mein koi update/change ho ya koi masla/error aaye, yahan notification aati hai taake aap aur main mil kar hal kar sakein.</p>
+      <div id="notificationsList" style="margin-top:8px;"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div class="modal-backdrop" id="onboardingModal">
+  <div class="modal">
+    <div class="card-title">
+      <span>New User / Account Setup</span>
+      <button type="button" class="btn btn-sm btn-light" id="closeOnboardingBtn">✕</button>
+    </div>
+    <p class="muted">Sign up easily with Email/Gmail (WhatsApp is optional). Choose your country, language, role, and payout method.</p>
+
+    <label>Full Name *</label>
+    <input type="text" id="obName" placeholder="e.g., Sana Tariq" />
+
+    <label>Email / Gmail *</label>
+    <input type="email" id="obEmail" placeholder="e.g., sana.tariq@gmail.com" />
+
+    <label>WhatsApp Number (Optional)</label>
+    <input type="text" id="obWhatsapp" placeholder="Optional — only if you want alerts" />
+
+    <div class="grid-2">
+      <div>
+        <label>Country &amp; Currency</label>
+        <select id="obCountry">
+          <option value="PK">Pakistan (PKR)</option>
+          <option value="IN">India (INR)</option>
+          <option value="US">International (USD)</option>
+        </select>
+      </div>
+      <div>
+        <label>Preferred Language</label>
+        <select id="obLang">
+          <option value="en">English</option>
+          <option value="ur">اردو (Urdu)</option>
+          <option value="hi">हिंदी (Hindi)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <label>Account Role</label>
+        <select id="obRole">
+          <option value="Seller">Seller / Upcycler</option>
+          <option value="Creator">Creator / Influencer</option>
+          <option value="Buyer">Buyer</option>
+        </select>
+      </div>
+      <div>
+        <label>Referring Creator Code (Optional)</label>
+        <input type="text" id="obRefCode" placeholder="e.g., ALI50" />
+      </div>
+    </div>
+
+    <label>Preferred Payout Method (For Withdrawals)</label>
+    <select id="obPayoutMethod"></select>
+
+    <div style="margin-top: 14px; display:flex; gap:8px; justify-content:flex-end;">
+      <button type="button" class="btn btn-light" id="cancelOnboardingBtn">Cancel</button>
+      <button type="button" class="btn btn-primary" id="saveOnboardingBtn">Create Profile &amp; Wallet</button>
+    </div>
+  </div>
+</div>
+
+<nav id="bottomNav">
+  <button type="button" class="active" data-tab="ai" onclick="window.__openTab && window.__openTab('ai')"><span>📷</span><span>AI &amp; Post</span></button>
+  <button type="button" data-tab="bazaar" onclick="window.__openTab && window.__openTab('bazaar')"><span>🛍️</span><span>Bazaar</span></button>
+  <button type="button" data-tab="wallets" onclick="window.__openTab && window.__openTab('wallets')"><span>💳</span><span>Wallets</span></button>
+  <button type="button" data-tab="owner" onclick="window.__openTab && window.__openTab('owner')"><span>👑</span><span>Owner</span></button>
+</nav>
+
+<script>
+(function() {
+  const COUNTRY_META = {
+    PK: { symbol: "Rs.", code: "PKR", name: "Pakistan", factor: 1, methods: ["JazzCash", "EasyPaisa", "Bank / Raast (IBAN)"] },
+    IN: { symbol: "₹", code: "INR", name: "India", factor: 0.3, methods: ["UPI (GPay / PhonePe / Paytm)", "Bank Account (IFSC)"] },
+    US: { symbol: "$", code: "USD", name: "International", factor: 0.004, methods: ["Bank Transfer (IBAN / SWIFT)", "Payoneer", "Wise", "PayPal"] }
+  };
+
+  const SAMPLES = {
+    jar: {
+      title: "Upcycled Lantern & Spice Jar Set",
+      price: 950,
+      svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#ecfdf5'/><rect x='145' y='52' width='110' height='142' rx='18' fill='#d1fae5' stroke='#059669' stroke-width='4'/><rect x='155' y='34' width='90' height='22' rx='6' fill='#d97706'/><circle cx='200' cy='125' r='26' fill='#fef3c7' stroke='#f59e0b' stroke-width='3'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#065f46'>Glass Jar + Twine &amp; Warm Light</text></svg>`)
+    },
+    chair: {
+      title: "Restored Accent Chair & Plant Stand",
+      price: 2800,
+      svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#fefce8'/><rect x='130' y='45' width='140' height='16' rx='6' fill='#92400e'/><rect x='142' y='61' width='14' height='135' rx='5' fill='#b45309'/><rect x='244' y='61' width='14' height='135' rx='5' fill='#b45309'/><rect x='125' y='118' width='150' height='18' rx='6' fill='#d97706'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#78350f'>Repaired Frame + Clean Finish</text></svg>`)
+    },
+    denim: {
+      title: "Stylish Quilted Denim Carry Pouch",
+      price: 1100,
+      svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#eff6ff'/><path d='M130 75 L270 75 L285 190 L115 190 Z' fill='#1d4ed8' rx='10'/><path d='M165 75 Q200 40 235 75' fill='none' stroke='#d97706' stroke-width='7' stroke-linecap='round'/><rect x='155' y='110' width='90' height='55' rx='8' fill='none' stroke='#93c5fd' stroke-width='2.5' stroke-dasharray='6 4'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#1e3a8a'>Upcycled Denim + Neat Trim</text></svg>`)
+    }
+  };
+
+  const I18N = {
+    en: {
+      tagline: "Photo → Guaranteed Benefit & Pretty Design",
+      aiHeading: "Snap or Upload Any Item Photo",
+      aiSub: "No 'what item is this' list needed. Just upload a photo—every item gets a practical repair or upcycle benefit and easy steps for a pretty design.",
+      dropLabel: "Tap to Take / Upload Photo",
+      dropHint: "Or choose a sample photo below to test right away",
+      genBtn: "✨ Get Benefit & Pretty Design Guide",
+      postBtn: "🛍️ Post Item to Bazaar",
+      stepsHeading: "Easy Steps for a Pretty Design:",
+      benefitTag: "Guaranteed Benefit",
+      benefitText: (title) => `Every item delivers practical value: "${title}" can either be repaired for everyday utility or upcycled into a clean, attractive piece so zero useful material goes to waste.`,
+      steps: [
+        "Clean & Reinforce: Wipe away dust, grease, or loose flakes, and strengthen weak joints or edges with strong glue, tape, or simple fasteners.",
+        "Shape with Everyday Supplies: Use simple home items—scissors, sandpaper/file, twine, fabric scraps, or leftover paint—to form a balanced, functional shape.",
+        "Smooth & Align Edges: Sand or trim rough corners and check alignment so the piece feels sturdy, safe, and intentional.",
+        "Pretty Design Finish: Add a harmonious color accent, clean border/trim, or tidy wrap so it looks charming, neat, and ready to use or sell."
+      ],
+      qaHeading: "💬 Ask Anything Else About This Item or Design",
+      followUp: (qType) => {
+        if (qType === "color") return "Pair 1 main tone with 1 warm accent (like soft cream + terracotta or sage + warm wood) and keep hardware/trim consistent for a high-end look.";
+        if (qType === "tools") return "You don't need power tools: household scissors, a nail file or fine sandpaper, white/craft glue, and cord or fabric strips work well for neat results.";
+        return "Clean photos in bright natural light, highlight the practical benefit in the first line, and price fairly based on condition and effort.";
+      }
+    },
+    ur: {
+      tagline: "تصویر → ہر چیز کا فائدہ اور پیارا ڈیزائن",
+      aiHeading: "کسی بھی چیز کی تصویر لیں یا اپلوڈ کریں",
+      aiSub: "کسی فہرست میں 'یہ کون سی چیز ہے' منتخب کرنے کی ضرورت نہیں۔ بس تصویر دیں—ہر چیز سے مرمت یا ری یوز کا عملی فائدہ اور پیارا ڈیزائن بنانے کے آسان طریقے ملیں گے۔",
+      dropLabel: "تصویر لینے یا اپلوڈ کرنے کے لیے دبائیں",
+      dropHint: "یا فوراً چیک کرنے کے لیے نیچے کوئی نمونہ تصویر چنیں",
+      genBtn: "✨ فائدہ اور پیارا ڈیزائن گائیڈ حاصل کریں",
+      postBtn: "🛍️ بازار میں پوسٹ کریں",
+      stepsHeading: "پیارا ڈیزائن بنانے کے آسان مراحل:",
+      benefitTag: "یقینی فائدہ",
+      benefitText: (title) => `ہر چیز سے کوئی نہ کوئی فائدہ ضرور نکلتا ہے: "${title}" کو یا تو مرمت کر کے روزمرہ استعمال کے قابل بنایا جا سکتا ہے یا خوبصورت نئی شکل دے کر کارآمد بنایا جا سکتا ہے تاکہ کچھ بھی ضائع نہ جائے۔`,
+      steps: [
+        "صفائی اور مضبوطی: گرد و غبار یا ڈھیلے حصے صاف کریں اور کمزور جوڑ یا کنارے گلو، ٹیپ یا سادہ فاسنر سے مضبوط بنائیں۔",
+        "گھر کے عام سامان سے شکل دیں: قینچی، ریگ مال/فائل، رسی، کپڑے کے ٹکڑے یا بچے ہوئے رنگ کی مدد سے متوازن اور کارآمد شکل تیار کریں۔",
+        "کنارے ہموار کریں: کھردرے کونوں کو ہموار کریں تاکہ چیز محفوظ، پائیدار اور صاف ستھری نظر آئے۔",
+        "پیاری فنشنگ دیں: مناسب رنگ، کنارے کی پٹی یا سادہ ڈیزائن شامل کریں تاکہ چیز دلکش اور بیچنے یا استعمال کے لائق لگے۔"
+      ],
+      qaHeading: "💬 اس چیز یا ڈیزائن کے بارے میں کچھ بھی مزید پوچھیں",
+      followUp: (qType) => {
+        if (qType === "color") return "ایک بنیادی رنگ کے ساتھ ایک ہلکا یا گرم رنگ ملائیں (جیسے آف وائٹ کے ساتھ ہلکا براؤن یا سبز) تاکہ ڈیزائن بھاری نہ لگے اور پیارا نظر آئے۔";
+        if (qType === "tools") return "مہنگے اوزار ضروری نہیں؛ عام قینچی، باریک ریگ مال، گلو، رسی یا کپڑے کی پٹی سے بھی بہترین اور صاف کام ہو سکتا ہے۔";
+        return "روشن روشنی میں صاف تصویر لیں، پہلے جملے میں چیز کا فائدہ واضح کریں، اور محنت و حالت کے مطابق مناسب قیمت رکھیں۔";
+      }
+    },
+    hi: {
+      tagline: "फ़ोटो → हर चीज़ का फ़ायदा और प्यारा डिज़ाइन",
+      aiHeading: "किसी भी चीज़ की फ़ोटो लें या अपलोड करें",
+      aiSub: "'यह कौन सी चीज़ है' चुनने की ज़रूरत नहीं। बस फ़ोटो डालें—हर चीज़ से मरम्मत या दोबारा इस्तेमाल का फ़ायदा और प्यारा डिज़ाइन बनाने के आसान क़दम मिलेंगे।",
+      dropLabel: "फ़ोटो लेने या अपलोड करने के लिए टैप करें",
+      dropHint: "या तुरंत जांचने के लिए नीचे कोई सैंपल फ़ोटो चुनें",
+      genBtn: "✨ फ़ायदा और प्यारा डिज़ाइन गाइड पाएं",
+      postBtn: "🛍️ बाज़ार में पोस्ट करें",
+      stepsHeading: "प्यारा डिज़ाइन बनाने के आसान क़दम:",
+      benefitTag: "पक्का फ़ायदा",
+      benefitText: (title) => `हर चीज़ से कोई न कोई फ़ायदा ज़रूर मिलता है: "${title}" को या तो ठीक करके रोज़मर्रा के काम में लाया जा सकता है या सुंदर रूप देकर उपयोगी बनाया जा सकता है।`,
+      steps: [
+        "सफ़ाई और मज़बूती: धूल या ढीले हिस्से साफ़ करें और कमज़ोर जोड़ या किनारों को ग्लू, टेप या सरल सहारे से मज़बूत करें।",
+        "घर के सामान से आकार दें: कैंची, सैंडपेपर, रस्सी, कपड़े के टुकड़े या बचे हुए पेंट से संतुलित और उपयोगी आकार बनाएं।",
+        "किनारे चिकने करें: खुरदुरे किनारों को चिकना करें ताकि चीज़ मज़बूत, सुरक्षित और साफ़ दिखे।",
+        "प्यारी फ़िनिश दें: मेल खाता रंग, बॉर्डर या साधारण सजावट जोड़ें ताकि चीज़ आकर्षक और इस्तेमाल या बिक्री के लिए तैयार दिखे।"
+      ],
+      qaHeading: "💬 इस चीज़ या डिज़ाइन के बारे में कुछ भी और पूछें",
+      followUp: (qType) => {
+        if (qType === "color") return "एक मुख्य रंग के साथ एक संतुलित रंग रखें (जैसे क्रीम के साथ हल्का भूरा या हरा) ताकि डिज़ाइन साफ़ और आकर्षक दिखे।";
+        if (qType === "tools") return "भारी मशीनों की ज़रूरत नहीं; साधारण कैंची, सैंडपेपर, ग्लू, रस्सी या कपड़े की पट्टी से भी सुंदर काम हो जाता है।";
+        return "अच्छी रोशनी में साफ़ फ़ोटो लें, शुरुआत में चीज़ का मुख्य फ़ायदा बताएं और मेहनत व स्थिति के हिसाब से सही दाम रखें।";
+      }
+    }
+  };
+
+  const DEFAULT_STATE = {
+    activeTab: "ai",
+    country: "PK",
+    lang: "en",
+    currentUserId: "USR-3",
+    savedOnly: false,
+    savedIds: [],
+    checkoutId: null,
+    openChatId: null,
+    orders: [],
+    config: {
+      weeklyFee: 300,
+      monthlyFee: 1000,
+      commPct: 20,
+      creatorPct: 50,
+      latePct: 10,
+      defaultRef: "ALI50",
+      ownerFree: true
+    },
+    users: [
+      { id: "USR-1", name: "Ayesha", email: "ayesha@example.com", whatsapp: "", role: "Seller", country: "PK", lang: "en", refCode: "ALI50", payoutMethod: "JazzCash", unlocked: true },
+      { id: "USR-2", name: "Ali Creator", email: "ali.creator@example.com", whatsapp: "", role: "Creator", country: "PK", lang: "en", refCode: "ALI50", payoutMethod: "JazzCash", unlocked: true },
+      { id: "USR-3", name: "Platform Owner", email: "owner@example.com", whatsapp: "", role: "Owner", country: "PK", lang: "en", refCode: "OWNER", payoutMethod: "Bank / Raast (IBAN)", unlocked: true },
+      { id: "USR-4", name: "Zain Buyer", email: "zain.buyer@example.com", whatsapp: "", role: "Buyer", country: "PK", lang: "en", refCode: "ALI50", payoutMethod: "JazzCash", unlocked: false }
+    ],
+    wallets: {
+      "USR-1": { earned: 0, withdrawn: 0 },
+      "USR-2": { earned: 0, withdrawn: 0 },
+      "USR-3": { earned: 0, withdrawn: 0 },
+      "USR-4": { earned: 0, withdrawn: 0 }
+    },
+    withdrawals: [],
+    notifications: [
+      { id: "NTF-1", type: "update", title: "App Update: Time-Based Creator Calc & No-Zoom Mobile Fix", detail: "Har creator ki earning waqt ke hisab se auto-calculate ho sakti hai aur mobile inputs zoom-safe kar diye gaye hain.", time: "Just now" }
+    ],
+    videoCreators: [
+      { id: "VC-1", name: "Bilal Video", payout: "EasyPaisa 0300-1234567", dailyRatePKR: 250, lastCalcAt: Date.now() - 2 * 86400000, earnedPKR: 500, sentPKR: 0, note: "App intro & upcycle reel (2 days accrued)" }
+    ],
+    listings: [
+      {
+        id: "LST-1",
+        sellerId: "USR-1",
+        sellerName: "Ayesha",
+        title: "Upcycled Lantern & Spice Jar Set",
+        price: 1000,
+        desc: "Practical storage & warm lighting crafted cleanly from reclaimed glass jars and cord.",
+        photo: SAMPLES.jar.svg,
+        status: "Available",
+        messages: [
+          { from: "Seller", text: "Hello! Ready for local delivery or pickup. Message here if you have any questions." }
+        ]
+      },
+      {
+        id: "LST-2",
+        sellerId: "USR-1",
+        sellerName: "Ayesha",
+        title: "Stylish Quilted Denim Carry Pouch",
+        price: 1200,
+        desc: "Durable daily pouch upcycled from sturdy denim with neat seams.",
+        photo: SAMPLES.denim.svg,
+        status: "Available",
+        messages: []
+      }
+    ],
+    currentPhoto: SAMPLES.jar.svg,
+    currentGuide: null
+  };
+
+  let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+  function fmtMoney(amountPKR) {
+    const meta = COUNTRY_META[state.country] || COUNTRY_META.PK;
+    const raw = Number(amountPKR || 0) * meta.factor;
+    const val = state.country === "US" ? raw.toFixed(2) : Math.round(raw).toLocaleString();
+    return `${meta.symbol} ${val}`;
+  }
+
+  function showToast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.style.display = "block";
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => { el.style.display = "none"; }, 2600);
+  }
+
+  function activateTab(tabName) {
+    if (!tabName) return;
+    state.activeTab = tabName;
+    try {
+      document.querySelectorAll("#bottomNav button").forEach(b => {
+        b.classList.toggle("active", b.dataset.tab === tabName);
+      });
+      document.querySelectorAll(".tab-pane").forEach(p => {
+        p.classList.toggle("active", p.id === "tab-" + tabName);
+      });
+      if (tabName === "bazaar") {
+        renderBazaar();
+        renderBuyerOrders();
+      } else if (tabName === "wallets") {
+        syncCreatorTimeEarnings(true);
+        renderWallets();
+      } else if (tabName === "owner") {
+        renderOwnerForm();
+        renderNotifications();
+      }
+      window.scrollTo(0, 0);
+    } catch (err) {
+      pushAlert("issue", "Tab Switch Issue", err && err.message ? err.message : "Tab open karte waqt masla aaya.", true);
+      renderNotifications();
+    }
+  }
+
+  function getUser(id) {
+    return state.users.find(u => u.id === id) || state.users[0];
+  }
+
+  function addEarning(userId, amountPKR) {
+    if (!state.wallets[userId]) state.wallets[userId] = { earned: 0, withdrawn: 0 };
+    state.wallets[userId].earned += Number(amountPKR || 0);
+  }
+
+  function findCreatorByCode(code) {
+    if (!code) return state.users.find(u => u.role === "Creator") || null;
+    const clean = code.trim().toLowerCase();
+    return state.users.find(u => u.role === "Creator" && (u.refCode || "").toLowerCase() === clean) || state.users.find(u => u.role === "Creator") || null;
+  }
+
+  function isPaywallLocked() {
+    const user = getUser(state.currentUserId);
+    if (user.role === "Owner" && state.config.ownerFree) return false;
+    return !user.unlocked;
+  }
+
+  function syncRoleVisibility() {
+    const user = getUser(state.currentUserId);
+    const isOwner = user.role === "Owner";
+    document.getElementById("ownerControlsCard").style.display = isOwner ? "block" : "none";
+    document.getElementById("ownerLockedNotice").style.display = isOwner ? "none" : "block";
+  }
+
+  function syncLanguageAndCountry() {
+    const t = I18N[state.lang] || I18N.en;
+    const user = getUser(state.currentUserId);
+    document.getElementById("appTagline").textContent = t.tagline;
+    document.getElementById("aiCardHeading").textContent = t.aiHeading;
+    document.getElementById("aiCardSub").textContent = t.aiSub;
+    document.getElementById("dropLabel").textContent = t.dropLabel;
+    document.getElementById("dropHint").textContent = t.dropHint;
+    document.getElementById("generateGuideBtn").textContent = t.genBtn;
+    document.getElementById("postToBazaarBtn").textContent = t.postBtn;
+    document.getElementById("qaHeading").textContent = t.qaHeading;
+    document.getElementById("activeUserPill").textContent = `User: ${user.name} (${user.role})`;
+    document.getElementById("rulesPill").textContent = `Escrow • ${state.config.commPct}% Fee • ${state.config.creatorPct}% Ref`;
+
+    const sw = document.getElementById("quickAccountSwitch");
+    sw.innerHTML = state.users.map(u => `<option value="${u.id}" ${u.id === state.currentUserId ? "selected" : ""}>View as: ${u.role} (${u.name})</option>`).join("");
+
+    const planSel = document.getElementById("planSelect");
+    planSel.innerHTML = `
+      <option value="weekly">Weekly (${fmtMoney(state.config.weeklyFee)})</option>
+      <option value="monthly">Monthly (${fmtMoney(state.config.monthlyFee)})</option>
+    `;
+
+    const methods = (COUNTRY_META[state.country] || COUNTRY_META.PK).methods;
+    document.getElementById("payMethodSelect").innerHTML = methods.map(m => `<option value="${m}">${m}</option>`).join("");
+    document.getElementById("withdrawMethodSelect").innerHTML = methods.map(m => `<option value="${m}">${m}</option>`).join("");
+
+    if (state.currentGuide) {
+      renderGuide(state.currentGuide.title);
+    }
+    syncRoleVisibility();
+    renderBazaar();
+    renderBuyerOrders();
+    renderWallets();
+    renderOwnerForm();
+    renderNotifications();
+    activateTab(state.activeTab || "ai");
+  }
+
+  function renderGuide(titleText) {
+    const t = I18N[state.lang] || I18N.en;
+    const cleanTitle = (titleText || "").trim() || t.benefitTag;
+    state.currentGuide = { title: cleanTitle };
+    const box = document.getElementById("guideBox");
+    box.style.display = "block";
+    document.getElementById("guideTitle").textContent = cleanTitle;
+    document.getElementById("guideBenefitTag").textContent = t.benefitTag;
+    document.getElementById("guideBenefitText").textContent = t.benefitText(cleanTitle);
+    document.getElementById("stepsHeading").textContent = t.stepsHeading;
+    document.getElementById("guideStepsList").innerHTML = t.steps.map(s => `<li>${s}</li>`).join("");
+  }
+
+  function handleSubscriptionPurchase(planKey) {
+    const user = getUser(state.currentUserId);
+    const fee = planKey === "monthly" ? Number(state.config.monthlyFee) : Number(state.config.weeklyFee);
+    const creator = findCreatorByCode(user.refCode);
+    const creatorShare = creator ? (fee * Number(state.config.creatorPct)) / 100 : 0;
+    const ownerShare = fee - creatorShare;
+
+    user.unlocked = true;
+    if (creator && creatorShare > 0) addEarning(creator.id, creatorShare);
+    addEarning("USR-3", ownerShare);
+
+    document.getElementById("paywallBox").style.display = "none";
+    showToast("Unlocked! Creator & Owner shares updated.");
+    renderWallets();
+  }
+
+  function createListing(title, price, desc) {
+    const user = getUser(state.currentUserId);
+    const finalTitle = (title || "").trim() || (state.currentGuide && state.currentGuide.title) || "Upcycled Item";
+    const finalPrice = Math.max(50, Number(price) || 1000);
+    const finalDesc = (desc || "").trim() || "Practical repair/upcycle item with neat finish and zero waste.";
+
+    state.listings.unshift({
+      id: "LST-" + Date.now().toString().slice(-4),
+      sellerId: user.id,
+      sellerName: user.name,
+      title: finalTitle,
+      price: finalPrice,
+      desc: finalDesc,
+      photo: state.currentPhoto || SAMPLES.jar.svg,
+      status: "Available",
+      messages: [
+        { from: "Seller", text: `Hi! Feel free to message me about "${finalTitle}".` }
+      ]
+    });
+    showToast("Posted to Bazaar!");
+    renderBazaar();
+  }
+
+  function placeBuyerOrder(listingId, buyerName, address, note) {
+    const item = state.listings.find(l => l.id === listingId);
+    if (!item || item.status !== "Available") return;
+    const buyer = getUser(state.currentUserId);
+    const order = {
+      id: "ORD-" + Date.now().toString().slice(-4),
+      listingId: item.id,
+      title: item.title,
+      sellerId: item.sellerId,
+      sellerName: item.sellerName,
+      buyerName: (buyerName || "").trim() || buyer.name,
+      address: (address || "").trim() || (COUNTRY_META[state.country] || COUNTRY_META.PK).name,
+      note: (note || "").trim(),
+      pricePKR: Number(item.price),
+      status: "In Escrow (Awaiting Delivery)",
+      refundPKR: 0
+    };
+    item.status = "In Escrow";
+    state.checkoutId = null;
+    state.orders.unshift(order);
+    showToast("Escrow order placed! Confirm delivery below.");
+    renderBazaar();
+    renderBuyerOrders();
+  }
+
+  function confirmOrderDelivery(orderId, mode) {
+    const order = state.orders.find(o => o.id === orderId);
+    const item = state.listings.find(l => l.id === order.listingId);
+    if (!order || order.status.startsWith("Completed")) return;
+
+    const seller = getUser(order.sellerId);
+    const creator = findCreatorByCode(seller.refCode);
+    const gross = Number(order.pricePKR);
+    const lateRefund = mode === "late" ? (gross * Number(state.config.latePct)) / 100 : 0;
+    const netAfterLate = gross - lateRefund;
+    const comm = (netAfterLate * Number(state.config.commPct)) / 100;
+    const creatorCut = creator ? (comm * Number(state.config.creatorPct)) / 100 : 0;
+    const ownerCut = comm - creatorCut;
+    const sellerNet = netAfterLate - comm;
+
+    addEarning(seller.id, sellerNet);
+    if (creator && creatorCut > 0) addEarning(creator.id, creatorCut);
+    addEarning("USR-3", ownerCut);
+
+    order.refundPKR = lateRefund;
+    order.status = mode === "late"
+      ? `Completed • Late Refund (${fmtMoney(lateRefund)} returned to Buyer)`
+      : "Completed • Delivered On Time";
+    if (item) item.status = "Sold";
+
+    showToast(mode === "late" ? `Settled with ${state.config.latePct}% buyer refund!` : "Settled On Time!");
+    renderBazaar();
+    renderBuyerOrders();
+    renderWallets();
+  }
+
+  function renderBazaar() {
+    document.getElementById("savedCount").textContent = state.savedIds.length;
+    const listToShow = state.savedOnly
+      ? state.listings.filter(l => state.savedIds.includes(l.id))
+      : state.listings;
+
+    const container = document.getElementById("bazaarList");
+    if (!listToShow.length) {
+      container.innerHTML = `<div class="card"><div class="muted">No items to show in this view.</div></div>`;
+      return;
+    }
+
+    container.innerHTML = listToShow.map(item => {
+      const isAvail = item.status === "Available";
+      const isSaved = state.savedIds.includes(item.id);
+      const chatOpen = state.openChatId === item.id;
+      const checkoutOpen = state.checkoutId === item.id && isAvail;
+      const currentUser = getUser(state.currentUserId);
+
+      return `
+        <div class="item-card">
+          <div class="item-head">
+            <div style="flex:1;">
+              <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                <strong style="font-size:15px;">${item.title}</strong>
+                <span class="badge ${isAvail ? "badge-green" : "badge-amber"}">${item.status}</span>
+              </div>
+              <div class="muted" style="margin-top:2px;">Seller: ${item.sellerName} • Escrow Protected</div>
+              <div class="price-tag">${fmtMoney(item.price)}</div>
+              <p style="font-size:13px; margin-top:6px;">${item.desc}</p>
+            </div>
+            <img src="${item.photo}" class="item-thumb" alt="${item.title}" />
+          </div>
+          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+            ${isAvail ? `<button type="button" class="btn btn-sm btn-primary" data-open-buy="${item.id}">🛒 Buy Now (Escrow)</button>` : ""}
+            <button type="button" class="btn btn-sm btn-light" data-chat-toggle="${item.id}">💬 Chat (${item.messages.length})</button>
+            <button type="button" class="btn btn-sm btn-light" data-save-item="${item.id}">${isSaved ? "❤️ Saved" : "🤍 Save"}</button>
+          </div>
+
+          ${checkoutOpen ? `
+            <div class="checkout-box">
+              <div style="font-weight:700; font-size:13px; margin-bottom:4px;">Buyer Delivery Details — ${item.title}</div>
+              <div class="grid-2">
+                <div>
+                  <label>Buyer Name</label>
+                  <input type="text" id="buyName-${item.id}" value="${currentUser.name}" />
+                </div>
+                <div>
+                  <label>Delivery City &amp; Address</label>
+                  <input type="text" id="buyAddr-${item.id}" placeholder="Street / Area / City" />
+                </div>
+              </div>
+              <label>Delivery / Pickup Note (Optional)</label>
+              <input type="text" id="buyNote-${item.id}" placeholder="e.g., Call on arrival or preferred time" />
+              <div style="margin-top:10px; display:flex; gap:8px;">
+                <button type="button" class="btn btn-sm btn-primary" data-confirm-buy="${item.id}">Place Escrow Order (${fmtMoney(item.price)})</button>
+                <button type="button" class="btn btn-sm btn-light" data-cancel-buy="${item.id}">Cancel</button>
+              </div>
+            </div>
+          ` : ""}
+
+          ${chatOpen ? `
+            <div class="chat-panel">
+              <div class="chat-log">
+                ${item.messages.length ? item.messages.map(m => `<div class="msg ${m.from === "Buyer" ? "msg-buyer" : "msg-seller"}"><strong>${m.from}:</strong> ${m.text}</div>`).join("") : `<div class="muted">No messages yet. Start the chat below.</div>`}
+              </div>
+              <div style="display:flex; gap:6px;">
+                <input type="text" id="chatInput-${item.id}" placeholder="Write a message to seller..." />
+                <button type="button" class="btn btn-sm btn-primary" data-send-chat="${item.id}">Send</button>
+              </div>
+            </div>
+          ` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderBuyerOrders() {
+    const el = document.getElementById("buyerOrdersList");
+    if (!state.orders.length) {
+      el.innerHTML = `<div class="muted" style="margin-top:8px;">No buyer orders placed yet. Click "Buy Now (Escrow)" on any available item above.</div>`;
+      return;
+    }
+    el.innerHTML = state.orders.map(o => {
+      const done = o.status.startsWith("Completed");
+      return `
+        <div class="order-row">
+          <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+            <strong>${o.title} (${o.id})</strong>
+            <span class="badge ${done ? "badge-green" : "badge-amber"}">${o.status}</span>
+          </div>
+          <div class="muted" style="margin-top:4px;">Buyer: ${o.buyerName} • Address: ${o.address} • Total: <strong>${fmtMoney(o.pricePKR)}</strong></div>
+          ${o.note ? `<div class="muted">Note: ${o.note}</div>` : ""}
+          ${!done ? `
+            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm btn-primary" data-settle-order="${o.id}" data-mode="ontime">✓ Confirm On-Time Delivery</button>
+              <button type="button" class="btn btn-sm btn-amber" data-settle-order="${o.id}" data-mode="late">⏱ Mark Late (-${state.config.latePct}% Buyer Refund)</button>
+            </div>
+          ` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  function pushAlert(type, title, detail, showBanner) {
+    state.notifications.unshift({
+      id: "NTF-" + Date.now().toString().slice(-5),
+      type: type || "update",
+      title,
+      detail,
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    });
+    const badge = document.getElementById("alertCountBadge");
+    if (badge) badge.textContent = state.notifications.length;
+    if (showBanner) {
+      const banner = document.getElementById("liveAlertBanner");
+      const tEl = document.getElementById("liveAlertTitle");
+      const dEl = document.getElementById("liveAlertDetail");
+      if (banner && tEl && dEl) {
+        tEl.textContent = title;
+        dEl.textContent = detail;
+        banner.style.display = "block";
+      }
+    }
+  }
+
+  function syncCreatorTimeEarnings(silent) {
+    const now = Date.now();
+    const dayMs = 86400000;
+    let addedAny = false;
+    state.videoCreators.forEach(vc => {
+      const rate = Number(vc.dailyRatePKR || 0);
+      const last = Number(vc.lastCalcAt || now);
+      if (rate > 0 && now > last) {
+        const elapsedDays = (now - last) / dayMs;
+        if (elapsedDays >= 0.01) {
+          const accrued = Math.round(rate * elapsedDays);
+          if (accrued > 0) {
+            vc.earnedPKR = Number(vc.earnedPKR || 0) + accrued;
+            addedAny = true;
+          }
+          vc.lastCalcAt = now;
+        }
+      } else {
+        vc.lastCalcAt = now;
+      }
+    });
+    if (!silent) {
+      showToast(addedAny ? "Time-based creator earnings synced!" : "Time clock synced up to now.");
+      renderWallets();
+    }
+  }
+
+  function renderNotifications() {
+    const badge = document.getElementById("alertCountBadge");
+    if (badge) badge.textContent = state.notifications.length;
+    const el = document.getElementById("notificationsList");
+    if (!el) return;
+    if (!state.notifications.length) {
+      el.innerHTML = `<div class="muted">Koi naya alert nahi hai.</div>`;
+      return;
+    }
+    el.innerHTML = state.notifications.map(n => `
+      <div class="notif-row">
+        <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+          <strong>${n.title}</strong>
+          <span class="badge ${n.type === "issue" ? "badge-amber" : "badge-green"}">${n.type === "issue" ? "Issue Alert" : "Update"} • ${n.time}</span>
+        </div>
+        <div class="muted" style="margin-top:4px;">${n.detail}</div>
+      </div>
+    `).join("");
+  }
+
+  function renderVideoCreators() {
+    const el = document.getElementById("videoCreatorsList");
+    if (!state.videoCreators.length) {
+      el.innerHTML = `<div class="muted">No saved video creators yet.</div>`;
+      return;
+    }
+    el.innerHTML = state.videoCreators.map(vc => {
+      const pending = Math.max(0, Number(vc.earnedPKR || 0) - Number(vc.sentPKR || 0));
+      const rateLabel = Number(vc.dailyRatePKR || 0) > 0 ? `${fmtMoney(vc.dailyRatePKR)}/day auto` : "Manual/Bonus";
+      return `
+        <div class="creator-row">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+            <div>
+              <strong>${vc.name}</strong>
+              <span class="badge badge-green" style="margin-left:6px;">${rateLabel}</span>
+              <span class="badge ${pending > 0 ? "badge-amber" : "badge-green"}" style="margin-left:4px;">
+                ${pending > 0 ? `Pending to Send: ${fmtMoney(pending)}` : "All Sent"}
+              </span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm btn-light" data-sync-vc="${vc.id}">⚡ Sync Time</button>
+              ${pending > 0 ? `<button type="button" class="btn btn-sm btn-primary" data-mark-sent="${vc.id}">💸 Send to Creator (${fmtMoney(pending)})</button>` : ""}
+              <button type="button" class="btn btn-sm btn-light" data-add-bonus="${vc.id}">+100 Bonus</button>
+            </div>
+          </div>
+          <div class="muted" style="margin-top:4px;">Payout: <strong>${vc.payout}</strong> • Total Earned: <strong>${fmtMoney(vc.earnedPKR)}</strong> • Sent by You: <strong>${fmtMoney(vc.sentPKR)}</strong></div>
+          ${vc.note ? `<div class="muted">Note: ${vc.note}</div>` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderWallets() {
+    const user = getUser(state.currentUserId);
+    const isOwner = user.role === "Owner";
+    const cardsEl = document.getElementById("walletSummaryCards");
+    const bodyEl = document.getElementById("walletTableBody");
+    const selEl = document.getElementById("withdrawAccountSelect");
+
+    const rows = state.users.map(u => {
+      const w = state.wallets[u.id] || { earned: 0, withdrawn: 0 };
+      const avail = Math.max(0, w.earned - w.withdrawn);
+      return { user: u, earned: w.earned, withdrawn: w.withdrawn, avail };
+    });
+
+    const vcPendingSum = state.videoCreators.reduce((a, vc) => a + Math.max(0, Number(vc.earnedPKR || 0) - Number(vc.sentPKR || 0)), 0);
+    const creatorSum = rows.filter(r => r.user.role === "Creator").reduce((a, b) => a + b.avail, 0) + vcPendingSum;
+    const ownerSum = rows.filter(r => r.user.role === "Owner").reduce((a, b) => a + b.avail, 0);
+    const myRow = rows.find(r => r.user.id === user.id) || rows[0];
+
+    cardsEl.innerHTML = isOwner
+      ? `
+        <div class="stat-card"><div class="muted">Video Creators Pending</div><div class="stat-val">${fmtMoney(vcPendingSum)}</div></div>
+        <div class="stat-card"><div class="muted">Creator Shares Total</div><div class="stat-val">${fmtMoney(creatorSum)}</div></div>
+        <div class="stat-card"><div class="muted">Owner Balance</div><div class="stat-val">${fmtMoney(ownerSum)}</div></div>
+      `
+      : `
+        <div class="stat-card"><div class="muted">Your Role</div><div class="stat-val">${user.role}</div></div>
+        <div class="stat-card"><div class="muted">Your Total Earned</div><div class="stat-val">${fmtMoney(myRow.earned)}</div></div>
+        <div class="stat-card"><div class="muted">Your Available Balance</div><div class="stat-val">${fmtMoney(myRow.avail)}</div></div>
+      `;
+
+    const visibleRows = isOwner ? rows : rows.filter(r => r.user.id === user.id);
+    bodyEl.innerHTML = visibleRows.map(r => `
+      <tr>
+        <td><strong>${r.user.name}</strong><div class="muted">${r.user.email}</div></td>
+        <td>${r.user.role}</td>
+        <td>${r.user.refCode || "—"}</td>
+        <td>${fmtMoney(r.earned)}</td>
+        <td>${fmtMoney(r.withdrawn)}</td>
+        <td><strong>${fmtMoney(r.avail)}</strong></td>
+      </tr>
+    `).join("");
+
+    selEl.innerHTML = visibleRows.map(r => `<option value="${r.user.id}">${r.user.name} (${r.user.role}) — Avail: ${fmtMoney(r.avail)}</option>`).join("");
+
+    const histEl = document.getElementById("withdrawHistory");
+    const myWithdrawals = isOwner ? state.withdrawals : state.withdrawals.filter(wd => wd.userId === user.id);
+    if (!myWithdrawals.length) {
+      histEl.innerHTML = `<div class="muted">No withdrawal requests yet.</div>`;
+    } else {
+      histEl.innerHTML = `<div style="font-weight:700; font-size:13px; margin-bottom:6px;">Recent Withdrawals &amp; Sent Payouts</div>` +
+        myWithdrawals.map(wd => `<div class="muted" style="padding:6px 0; border-bottom:1px solid var(--border);">• <strong>${wd.name}</strong> — <strong>${fmtMoney(wd.amountPKR)}</strong> via ${wd.method} (${wd.dest}) — <span class="badge badge-green">Processed</span></div>`).join("");
+    }
+
+    const activeCreator = state.users.find(u => u.role === "Creator") || user;
+    const refCodeVal = (user.role === "Creator" ? user.refCode : activeCreator.refCode) || state.config.defaultRef;
+    document.getElementById("creatorRefCodeDisplay").value = refCodeVal;
+    document.getElementById("creatorInviteText").value = `Join & use code ${refCodeVal} for ${state.config.creatorPct}% creator share`;
+
+    renderVideoCreators();
+  }
+
+  function renderOwnerForm() {
+    document.getElementById("ownerFreeToggle").checked = Boolean(state.config.ownerFree);
+    document.getElementById("cfgWeeklyFee").value = state.config.weeklyFee;
+    document.getElementById("cfgMonthlyFee").value = state.config.monthlyFee;
+    document.getElementById("cfgCommPct").value = state.config.commPct;
+    document.getElementById("cfgCreatorPct").value = state.config.creatorPct;
+    document.getElementById("cfgLatePct").value = state.config.latePct;
+    document.getElementById("cfgDefaultRef").value = state.config.defaultRef;
+  }
+
+  document.getElementById("quickAccountSwitch").addEventListener("change", (e) => {
+    state.currentUserId = e.target.value;
+    document.getElementById("paywallBox").style.display = "none";
+    showToast(`Switched view to ${getUser(state.currentUserId).name}`);
+    syncLanguageAndCountry();
+  });
+
+  const bottomNavEl = document.getElementById("bottomNav");
+  if (bottomNavEl) {
+    bottomNavEl.querySelectorAll("button[data-tab]").forEach(btn => {
+      btn.onclick = function(ev) {
+        if (ev) ev.preventDefault();
+        activateTab(this.getAttribute("data-tab"));
+      };
+    });
+    bottomNavEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-tab]");
+      if (btn) activateTab(btn.dataset.tab);
+    });
+  }
+
+  document.getElementById("countrySelect").addEventListener("change", (e) => {
+    state.country = e.target.value;
+    syncLanguageAndCountry();
+  });
+
+  document.getElementById("langSelect").addEventListener("change", (e) => {
+    state.lang = e.target.value;
+    syncLanguageAndCountry();
+  });
+
+  const photoInput = document.getElementById("photoInput");
+  const photoPreview = document.getElementById("photoPreview");
+  document.getElementById("photoDrop").addEventListener("click", () => photoInput.click());
+  photoInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.currentPhoto = reader.result;
+      photoPreview.src = state.currentPhoto;
+      photoPreview.style.display = "block";
+      showToast("Photo ready!");
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.querySelectorAll(".sample-photo-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const s = SAMPLES[btn.dataset.sample];
+      if (!s) return;
+      state.currentPhoto = s.svg;
+      photoPreview.src = s.svg;
+      photoPreview.style.display = "block";
+      if (!document.getElementById("itemTitleInput").value) {
+        document.getElementById("itemTitleInput").value = s.title;
+      }
+      if (!document.getElementById("itemPriceInput").value) {
+        document.getElementById("itemPriceInput").value = s.price;
+      }
+      showToast(`Loaded: ${s.title}`);
+    });
+  });
+
+  document.getElementById("generateGuideBtn").addEventListener("click", () => {
+    if (isPaywallLocked()) {
+      document.getElementById("paywallBox").style.display = "block";
+      showToast("Please unlock access to view full guide.");
+      return;
+    }
+    renderGuide(document.getElementById("itemTitleInput").value);
+  });
+
+  document.getElementById("postToBazaarBtn").addEventListener("click", () => {
+    if (isPaywallLocked()) {
+      document.getElementById("paywallBox").style.display = "block";
+      showToast("Please unlock access to post to Bazaar.");
+      return;
+    }
+    const title = document.getElementById("itemTitleInput").value;
+    const price = document.getElementById("itemPriceInput").value;
+    createListing(title, price, (I18N[state.lang] || I18N.en).benefitText((title || "Upcycled Item").trim() || "Upcycled Item"));
+    activateTab("bazaar");
+  });
+
+  document.getElementById("unlockPayBtn").addEventListener("click", () => {
+    handleSubscriptionPurchase(document.getElementById("planSelect").value);
+    if (document.getElementById("itemTitleInput").value || state.currentPhoto) {
+      renderGuide(document.getElementById("itemTitleInput").value);
+    }
+  });
+
+  document.getElementById("jumpOwnerFreeBtn").addEventListener("click", () => {
+    activateTab("owner");
+  });
+
+  function answerFollowUp(qType, customText) {
+    if (isPaywallLocked()) {
+      document.getElementById("paywallBox").style.display = "block";
+      return;
+    }
+    const t = I18N[state.lang] || I18N.en;
+    const qLabel = customText || (qType === "color" ? "Best colors?" : qType === "tools" ? "No special tools?" : "How to price & sell?");
+    const reply = qType ? t.followUp(qType) : `${t.followUp("sell")} (${customText})`;
+    const wrap = document.getElementById("followUpAnswers");
+    const div = document.createElement("div");
+    div.className = "answer-bubble";
+    div.innerHTML = `<strong>Q: ${qLabel}</strong><div style="margin-top:4px;">${reply}</div>`;
+    wrap.prepend(div);
+  }
+
+  document.querySelectorAll(".quick-ask").forEach(btn => {
+    btn.addEventListener("click", () => answerFollowUp(btn.dataset.q, ""));
+  });
+  document.getElementById("askFollowUpBtn").addEventListener("click", () => {
+    const inp = document.getElementById("followUpInput");
+    if (!inp.value.trim()) return;
+    answerFollowUp(null, inp.value.trim());
+    inp.value = "";
+  });
+
+  document.getElementById("toggleSavedFilterBtn").addEventListener("click", (e) => {
+    state.savedOnly = !state.savedOnly;
+    e.target.classList.toggle("btn-primary", state.savedOnly);
+    e.target.classList.toggle("btn-light", !state.savedOnly);
+    renderBazaar();
+  });
+
+  document.getElementById("quickAddListingBtn").addEventListener("click", () => {
+    const f = document.getElementById("quickPostForm");
+    f.style.display = f.style.display === "none" ? "block" : "none";
+  });
+  document.getElementById("cancelQuickListingBtn").addEventListener("click", () => {
+    document.getElementById("quickPostForm").style.display = "none";
+  });
+  document.getElementById("saveQuickListingBtn").addEventListener("click", () => {
+    createListing(
+      document.getElementById("newListTitle").value,
+      document.getElementById("newListPrice").value,
+      document.getElementById("newListDesc").value
+    );
+    document.getElementById("newListTitle").value = "";
+    document.getElementById("newListPrice").value = "";
+    document.getElementById("newListDesc").value = "";
+    document.getElementById("quickPostForm").style.display = "none";
+  });
+
+  document.getElementById("bazaarList").addEventListener("click", (e) => {
+    const buyBtn = e.target.closest("[data-open-buy]");
+    if (buyBtn) {
+      const buyId = buyBtn.dataset.openBuy;
+      state.checkoutId = state.checkoutId === buyId ? null : buyId;
+      renderBazaar();
+      return;
+    }
+    const cancelBuyBtn = e.target.closest("[data-cancel-buy]");
+    if (cancelBuyBtn) {
+      state.checkoutId = null;
+      renderBazaar();
+      return;
+    }
+    const confirmBuyBtn = e.target.closest("[data-confirm-buy]");
+    if (confirmBuyBtn) {
+      const confirmBuyId = confirmBuyBtn.dataset.confirmBuy;
+      placeBuyerOrder(
+        confirmBuyId,
+        document.getElementById("buyName-" + confirmBuyId).value,
+        document.getElementById("buyAddr-" + confirmBuyId).value,
+        document.getElementById("buyNote-" + confirmBuyId).value
+      );
+      return;
+    }
+    const saveBtn = e.target.closest("[data-save-item]");
+    if (saveBtn) {
+      const saveId = saveBtn.dataset.saveItem;
+      if (state.savedIds.includes(saveId)) {
+        state.savedIds = state.savedIds.filter(id => id !== saveId);
+        showToast("Removed from Saved.");
+      } else {
+        state.savedIds.push(saveId);
+        showToast("Saved item!");
+      }
+      renderBazaar();
+      return;
+    }
+    const chatBtn = e.target.closest("[data-chat-toggle]");
+    if (chatBtn) {
+      const chatId = chatBtn.dataset.chatToggle;
+      state.openChatId = state.openChatId === chatId ? null : chatId;
+      renderBazaar();
+      return;
+    }
+    const sendBtn = e.target.closest("[data-send-chat]");
+    if (sendBtn) {
+      const sendId = sendBtn.dataset.sendChat;
+      const inp = document.getElementById("chatInput-" + sendId);
+      const item = state.listings.find(l => l.id === sendId);
+      if (inp && item && inp.value.trim()) {
+        item.messages.push({ from: "Buyer", text: inp.value.trim() });
+        item.messages.push({ from: "Seller", text: "Thanks for reaching out! We can arrange delivery smoothly." });
+        inp.value = "";
+        renderBazaar();
+      }
+    }
+  });
+
+  document.getElementById("buyerOrdersList").addEventListener("click", (e) => {
+    const settleBtn = e.target.closest("[data-settle-order]");
+    if (settleBtn) {
+      confirmOrderDelivery(settleBtn.dataset.settleOrder, settleBtn.dataset.mode);
+    }
+  });
+
+  document.getElementById("saveVideoCreatorBtn").addEventListener("click", () => {
+    const name = document.getElementById("vcNameInput").value.trim();
+    const payout = document.getElementById("vcPayoutInput").value.trim() || "Direct Payout";
+    const meta = COUNTRY_META[state.country] || COUNTRY_META.PK;
+    const rawRate = Number(document.getElementById("vcDailyRateInput").value || 0);
+    const dailyRatePKR = rawRate > 0 ? rawRate / meta.factor : 0;
+    const rawEarn = Number(document.getElementById("vcEarnInput").value || 0);
+    const earnPKR = rawEarn > 0 ? rawEarn / meta.factor : 0;
+    const note = document.getElementById("vcNoteInput").value.trim();
+
+    if (!name) {
+      showToast("Enter video creator name.");
+      pushAlert("issue", "Creator Name Missing", "Video creator save karte waqt naam darj karna zaroori hai.");
+      renderNotifications();
+      return;
+    }
+
+    const existing = state.videoCreators.find(vc => vc.name.toLowerCase() === name.toLowerCase());
+    if (existing) {
+      existing.payout = payout;
+      if (dailyRatePKR > 0) existing.dailyRatePKR = dailyRatePKR;
+      existing.lastCalcAt = Date.now();
+      existing.earnedPKR = Number(existing.earnedPKR || 0) + earnPKR;
+      if (note) existing.note = note;
+      showToast(`Updated ${existing.name}'s time rate & earnings!`);
+    } else {
+      state.videoCreators.unshift({
+        id: "VC-" + Date.now().toString().slice(-4),
+        name,
+        payout,
+        dailyRatePKR,
+        lastCalcAt: Date.now(),
+        earnedPKR: earnPKR,
+        sentPKR: 0,
+        note
+      });
+      showToast(`Saved ${name} with auto time calculation!`);
+    }
+
+    document.getElementById("vcNameInput").value = "";
+    document.getElementById("vcPayoutInput").value = "";
+    document.getElementById("vcDailyRateInput").value = "";
+    document.getElementById("vcEarnInput").value = "";
+    document.getElementById("vcNoteInput").value = "";
+    renderWallets();
+  });
+
+  document.getElementById("videoCreatorsList").addEventListener("click", (e) => {
+    const syncBtn = e.target.closest("[data-sync-vc]");
+    if (syncBtn) {
+      syncCreatorTimeEarnings(false);
+      return;
+    }
+    const sentBtn = e.target.closest("[data-mark-sent]");
+    if (sentBtn) {
+      const vc = state.videoCreators.find(x => x.id === sentBtn.dataset.markSent);
+      if (!vc) return;
+      const pending = Math.max(0, Number(vc.earnedPKR || 0) - Number(vc.sentPKR || 0));
+      if (pending <= 0) return;
+      vc.sentPKR = Number(vc.sentPKR || 0) + pending;
+      state.withdrawals.unshift({
+        userId: state.currentUserId,
+        name: `${vc.name} (Creator)`,
+        amountPKR: pending,
+        method: "Direct Creator Payout",
+        dest: vc.payout
+      });
+      showToast(`Marked ${fmtMoney(pending)} sent to ${vc.name}!`);
+      renderWallets();
+      return;
+    }
+    const bonusBtn = e.target.closest("[data-add-bonus]");
+    if (bonusBtn) {
+      const vc = state.videoCreators.find(x => x.id === bonusBtn.dataset.addBonus);
+      if (!vc) return;
+      vc.earnedPKR = Number(vc.earnedPKR || 0) + 100;
+      showToast(`Added ${fmtMoney(100)} to ${vc.name}'s saved earnings!`);
+      renderWallets();
+    }
+  });
+
+  document.getElementById("submitWithdrawBtn").addEventListener("click", () => {
+    const uid = document.getElementById("withdrawAccountSelect").value;
+    const method = document.getElementById("withdrawMethodSelect").value;
+    const dest = document.getElementById("withdrawDestInput").value.trim() || "Verified Payout Account";
+    const meta = COUNTRY_META[state.country] || COUNTRY_META.PK;
+    const rawAmt = Number(document.getElementById("withdrawAmountInput").value);
+    const amtPKR = rawAmt > 0 ? rawAmt / meta.factor : 0;
+
+    const w = state.wallets[uid] || { earned: 0, withdrawn: 0 };
+    const avail = Math.max(0, w.earned - w.withdrawn);
+    if (!amtPKR || amtPKR <= 0) {
+      showToast("Enter a valid withdrawal amount.");
+      return;
+    }
+    if (amtPKR > avail + 0.01) {
+      showToast("Amount exceeds available balance.");
+      return;
+    }
+    w.withdrawn += amtPKR;
+    const u = getUser(uid);
+    state.withdrawals.unshift({ userId: uid, name: u.name, amountPKR: amtPKR, method, dest });
+    document.getElementById("withdrawAmountInput").value = "";
+    showToast("Withdrawal recorded!");
+    renderWallets();
+  });
+
+  const modal = document.getElementById("onboardingModal");
+  function openOnboarding() {
+    const methods = (COUNTRY_META[document.getElementById("obCountry").value] || COUNTRY_META.PK).methods;
+    document.getElementById("obPayoutMethod").innerHTML = methods.map(m => `<option value="${m}">${m}</option>`).join("");
+    modal.style.display = "flex";
+  }
+  document.getElementById("openOnboardingBtn").addEventListener("click", openOnboarding);
+  document.getElementById("closeOnboardingBtn").addEventListener("click", () => { modal.style.display = "none"; });
+  document.getElementById("cancelOnboardingBtn").addEventListener("click", () => { modal.style.display = "none"; });
+  document.getElementById("obCountry").addEventListener("change", () => {
+    const methods = (COUNTRY_META[document.getElementById("obCountry").value] || COUNTRY_META.PK).methods;
+    document.getElementById("obPayoutMethod").innerHTML = methods.map(m => `<option value="${m}">${m}</option>`).join("");
+  });
+
+  document.getElementById("saveOnboardingBtn").addEventListener("click", () => {
+    const name = document.getElementById("obName").value.trim() || "New Member";
+    const email = document.getElementById("obEmail").value.trim() || "member@example.com";
+    const whatsapp = document.getElementById("obWhatsapp").value.trim();
+    const country = document.getElementById("obCountry").value;
+    const lang = document.getElementById("obLang").value;
+    const role = document.getElementById("obRole").value;
+    const refCode = document.getElementById("obRefCode").value.trim() || state.config.defaultRef;
+    const payoutMethod = document.getElementById("obPayoutMethod").value;
+
+    const newId = "USR-" + Date.now().toString().slice(-4);
+    const newUser = {
+      id: newId,
+      name,
+      email,
+      whatsapp,
+      role,
+      country,
+      lang,
+      refCode: role === "Creator" ? (document.getElementById("obRefCode").value.trim() || name.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6) + "50") : refCode,
+      payoutMethod,
+      unlocked: false
+    };
+    state.users.push(newUser);
+    state.wallets[newId] = { earned: 0, withdrawn: 0 };
+    state.currentUserId = newId;
+    state.country = country;
+    state.lang = lang;
+    document.getElementById("countrySelect").value = country;
+    document.getElementById("langSelect").value = lang;
+
+    document.getElementById("obName").value = "";
+    document.getElementById("obEmail").value = "";
+    document.getElementById("obWhatsapp").value = "";
+    modal.style.display = "none";
+    showToast(`Welcome, ${name}!`);
+    syncLanguageAndCountry();
+  });
+
+  document.getElementById("saveOwnerConfigBtn").addEventListener("click", () => {
+    state.config.ownerFree = document.getElementById("ownerFreeToggle").checked;
+    state.config.weeklyFee = Math.max(1, Number(document.getElementById("cfgWeeklyFee").value) || 300);
+    state.config.monthlyFee = Math.max(1, Number(document.getElementById("cfgMonthlyFee").value) || 1000);
+    state.config.commPct = Math.max(0, Math.min(80, Number(document.getElementById("cfgCommPct").value) || 20));
+    state.config.creatorPct = Math.max(0, Math.min(100, Number(document.getElementById("cfgCreatorPct").value) || 50));
+    state.config.latePct = Math.max(0, Math.min(50, Number(document.getElementById("cfgLatePct").value) || 10));
+    state.config.defaultRef = document.getElementById("cfgDefaultRef").value.trim() || "ALI50";
+    showToast("Owner settings saved!");
+    syncLanguageAndCountry();
+  });
+
+  document.getElementById("restoreDefaultConfigBtn").addEventListener("click", () => {
+    state.config = JSON.parse(JSON.stringify(DEFAULT_STATE.config));
+    renderOwnerForm();
+    syncLanguageAndCountry();
+    showToast("Defaults restored.");
+  });
+
+  document.getElementById("resetDemoBtn").addEventListener("click", () => {
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    document.getElementById("countrySelect").value = state.country;
+    document.getElementById("langSelect").value = state.lang;
+    document.getElementById("guideBox").style.display = "none";
+    document.getElementById("paywallBox").style.display = "none";
+    document.getElementById("photoPreview").style.display = "none";
+    syncLanguageAndCountry();
+    showToast("App reset to clean state.");
+  });
+
+  document.getElementById("copyCreatorInviteBtn").addEventListener("click", () => {
+    const txt = document.getElementById("creatorInviteText").value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(() => {});
+    }
+    showToast("Creator code & invite copied!");
+  });
+
+  document.getElementById("openAlertsBtn").addEventListener("click", () => {
+    activateTab("owner");
+    renderNotifications();
+    showToast("Notifications panel opened.");
+  });
+
+  document.getElementById("clearAlertsBtn").addEventListener("click", () => {
+    state.notifications = [];
+    renderNotifications();
+    showToast("Alerts cleared.");
+  });
+
+  window.addEventListener("error", (ev) => {
+    pushAlert("issue", "App Issue Detected", (ev && ev.message) || "Kuch masla aaya—mil kar hal karte hain.");
+    renderNotifications();
+  });
+
+  document.getElementById("bannerOpenAlertsBtn").addEventListener("click", () => {
+    document.getElementById("liveAlertBanner").style.display = "none";
+    activateTab("owner");
+    renderNotifications();
+  });
+
+  document.getElementById("bannerDismissBtn").addEventListener("click", () => {
+    document.getElementById("liveAlertBanner").style.display = "none";
+  });
+
+  window.addEventListener("unhandledrejection", (ev) => {
+    const msg = (ev && ev.reason && (ev.reason.message || String(ev.reason))) || "App mein koi masla aaya—mil kar hal karte hain.";
+    pushAlert("issue", "App Issue Alert", msg, true);
+    renderNotifications();
+  });
+
+  setInterval(() => {
+    syncCreatorTimeEarnings(true);
+    renderWallets();
+  }, 15000);
+
+  syncCreatorTimeEarnings(true);
+  syncLanguageAndCountry();
+})();
+</script>
+
+<script>
+(function() {
+  function directOpenTab(tabId) { window.__openTab = directOpenTab;
+    var panes = document.querySelectorAll('.tab-pane');
+    for (var i = 0; i < panes.length; i++) {
+      var isTarget = (panes[i].id === 'tab-' + tabId);
+      panes[i].style.display = isTarget ? 'block' : 'none';
+      if (isTarget) panes[i].classList.add('active');
+      else panes[i].classList.remove('active');
+    }
+    var navBtns = document.querySelectorAll('#bottomNav button[data-tab]');
+    for (var j = 0; j < navBtns.length; j++) {
+      var isBtn = (navBtns[j].getAttribute('data-tab') === tabId);
+      if (isBtn) navBtns[j].classList.add('active');
+      else navBtns[j].classList.remove('active');
+    }
+    
+  }
+
+  // Ensure initial visibility matches active tab
+  directOpenTab('ai');
+
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    while (target && target !== document) {
+      if (target.matches && target.matches('#bottomNav button[data-tab]')) {
+        e.preventDefault();
+        directOpenTab(target.getAttribute('data-tab'));
+        return;
+      }
+      target = target.parentNode;
+    }
+  }, true);
+
+  document.addEventListener('touchend', function(e) {
+    var target = e.target;
+    while (target && target !== document) {
+      if (target.matches && target.matches('#bottomNav button[data-tab]')) {
+        e.preventDefault();
+        directOpenTab(target.getAttribute('data-tab'));
+        return;
+      }
+      target = target.parentNode;
+    }
+  }, true);
+})();
+</script>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').catch(function() {});
+  });
+}
+</script>
+
+</body>
+</html>
