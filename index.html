@@ -24,7 +24,7 @@
     --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-  body { background: var(--bg); color: var(--ink); line-height: 1.5; padding-bottom: 92px; }
+  body { background: var(--bg); color: var(--ink); line-height: 1.55; padding-bottom: 92px; }
 
   header {
     background: linear-gradient(135deg, var(--emerald-dark), var(--emerald));
@@ -117,6 +117,13 @@
   .guide-box {
     background: #f6fdf9; border: 1px solid #bbf7d0; border-radius: 14px; padding: 14px; margin-top: 12px;
   }
+  .meta-strip {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 10px;
+  }
+  .meta-box {
+    background: #ffffff; border: 1px solid #d1fae5; border-radius: 10px; padding: 9px 11px; font-size: 12.5px;
+  }
+  .meta-box strong { display: block; font-size: 11.5px; color: var(--emerald-dark); margin-bottom: 2px; }
   .steps-list { margin: 8px 0 0 18px; }
   .steps-list li { margin-bottom: 7px; font-size: 13.5px; }
 
@@ -238,7 +245,7 @@
         <span id="aiCardHeading">Snap or Upload Any Item Photo</span>
         <span class="badge badge-green" id="benefitBadge">Zero Waste • Guaranteed Benefit</span>
       </div>
-      <p class="muted" id="aiCardSub">No "what item is this" list needed. Just upload a photo—every item gets a practical repair or upcycle benefit and easy steps for a pretty design.</p>
+      <p class="muted" id="aiCardSub">No "what item is this" list needed. Just upload a photo or type any item name—every item gets a practical repair or upcycle benefit and 12 easy steps for a pretty design.</p>
 
       <div class="photo-drop" id="photoDrop">
         <input type="file" id="photoInput" accept="image/*" style="display:none;" />
@@ -251,14 +258,15 @@
         <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="jar">🫙 Glass Jar &amp; Scrap</button>
         <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="chair">🪑 Worn Chair / Wood</button>
         <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="denim">👖 Old Jeans / Fabric</button>
+        <button type="button" class="btn btn-sm btn-light sample-photo-btn" data-sample="bottle">🍾 Plastic Bottle</button>
       </div>
 
       <img id="photoPreview" class="preview-img" alt="Uploaded item preview" />
 
       <div class="grid-2" style="margin-top: 8px;">
         <div>
-          <label id="titleInputLabel">Listing Title (Optional — auto-suggested if blank)</label>
-          <input type="text" id="itemTitleInput" placeholder="e.g., Upcycled Garden Lantern" />
+          <label id="titleInputLabel">Item Name / Listing Title (Any item works—auto-detected if blank)</label>
+          <input type="text" id="itemTitleInput" placeholder="e.g., Plastic Bottle, Glass Jar, Old Jeans, Box, Chair..." />
         </div>
         <div>
           <label id="priceInputLabel">Listing Price (Optional — for Bazaar post)</label>
@@ -296,7 +304,10 @@
           <span class="badge badge-green" id="guideBenefitTag"></span>
         </div>
         <p style="margin-top: 8px; font-size: 13.5px;" id="guideBenefitText"></p>
-        <div style="font-weight: 700; font-size: 13px; margin-top: 10px;" id="stepsHeading"></div>
+
+        <div class="meta-strip" id="guideMetaStrip"></div>
+
+        <div style="font-weight: 700; font-size: 13px; margin-top: 12px;" id="stepsHeading"></div>
         <ol class="steps-list" id="guideStepsList"></ol>
 
         <div class="qa-box">
@@ -305,9 +316,10 @@
             <button type="button" class="btn btn-sm btn-light quick-ask" data-q="color">🎨 Best colors?</button>
             <button type="button" class="btn btn-sm btn-light quick-ask" data-q="tools">🛠️ No special tools?</button>
             <button type="button" class="btn btn-sm btn-light quick-ask" data-q="sell">💰 How to price &amp; sell?</button>
+            <button type="button" class="btn btn-sm btn-light quick-ask" data-q="ideas">✨ More design ideas?</button>
           </div>
           <div style="display:flex; gap: 8px;">
-            <input type="text" id="followUpInput" placeholder="Ask a question about repair, paint, glue, or design..." />
+            <input type="text" id="followUpInput" placeholder="Ask any question (in English, Urdu, or Roman Urdu)..." />
             <button type="button" class="btn btn-sm btn-primary" id="askFollowUpBtn">Ask</button>
           </div>
           <div id="followUpAnswers"></div>
@@ -606,9 +618,9 @@
 
 <nav id="bottomNav">
   <button type="button" class="active" data-tab="ai" onclick="window.__openTab && window.__openTab('ai')"><span>📷</span><span>AI &amp; Post</span></button>
-  <button type="button" data-tab="bazaar" onclick="window.__openTab && window.__openTab('bazaar')"><span>🛍️</span><span>Bazaar</span></button>
-  <button type="button" data-tab="wallets" onclick="window.__openTab && window.__openTab('wallets')"><span>💳</span><span>Wallets</span></button>
-  <button type="button" data-tab="owner" onclick="window.__openTab && window.__openTab('owner')"><span>👑</span><span>Owner</span></button>
+  <button type="button" class="btn" data-tab="bazaar" onclick="window.__openTab && window.__openTab('bazaar')" style="background:none;border-radius:0;"><span>🛍️</span><span>Bazaar</span></button>
+  <button type="button" class="btn" data-tab="wallets" onclick="window.__openTab && window.__openTab('wallets')" style="background:none;border-radius:0;"><span>💳</span><span>Wallets</span></button>
+  <button type="button" class="btn" data-tab="owner" onclick="window.__openTab && window.__openTab('owner')" style="background:none;border-radius:0;"><span>👑</span><span>Owner</span></button>
 </nav>
 
 <script>
@@ -621,94 +633,409 @@
 
   const SAMPLES = {
     jar: {
-      title: "Upcycled Lantern & Spice Jar Set",
+      title: "Glass Jar & Scrap",
       price: 950,
       svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#ecfdf5'/><rect x='145' y='52' width='110' height='142' rx='18' fill='#d1fae5' stroke='#059669' stroke-width='4'/><rect x='155' y='34' width='90' height='22' rx='6' fill='#d97706'/><circle cx='200' cy='125' r='26' fill='#fef3c7' stroke='#f59e0b' stroke-width='3'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#065f46'>Glass Jar + Twine &amp; Warm Light</text></svg>`)
     },
     chair: {
-      title: "Restored Accent Chair & Plant Stand",
+      title: "Worn Chair / Wood",
       price: 2800,
       svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#fefce8'/><rect x='130' y='45' width='140' height='16' rx='6' fill='#92400e'/><rect x='142' y='61' width='14' height='135' rx='5' fill='#b45309'/><rect x='244' y='61' width='14' height='135' rx='5' fill='#b45309'/><rect x='125' y='118' width='150' height='18' rx='6' fill='#d97706'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#78350f'>Repaired Frame + Clean Finish</text></svg>`)
     },
     denim: {
-      title: "Stylish Quilted Denim Carry Pouch",
+      title: "Old Jeans / Fabric",
       price: 1100,
       svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#eff6ff'/><path d='M130 75 L270 75 L285 190 L115 190 Z' fill='#1d4ed8' rx='10'/><path d='M165 75 Q200 40 235 75' fill='none' stroke='#d97706' stroke-width='7' stroke-linecap='round'/><rect x='155' y='110' width='90' height='55' rx='8' fill='none' stroke='#93c5fd' stroke-width='2.5' stroke-dasharray='6 4'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#1e3a8a'>Upcycled Denim + Neat Trim</text></svg>`)
+    },
+    bottle: {
+      title: "Plastic Bottle",
+      price: 650,
+      svg: "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'><rect width='400' height='240' fill='#f0fdf4'/><rect x='162' y='45' width='76' height='150' rx='22' fill='#bbf7d0' stroke='#0b6e4f' stroke-width='4'/><rect x='178' y='26' width='44' height='20' rx='5' fill='#d97706'/><path d='M162 125 L238 125' stroke='#0b6e4f' stroke-width='3' stroke-dasharray='5 4'/><text x='200' y='222' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#065f46'>Plastic Bottle Planter &amp; Organizer</text></svg>`)
     }
   };
+
+  // Rich 12-step item-specific guides in EN, UR, and HI
+  const ITEM_GUIDES = {
+    bottle: {
+      en: {
+        category: "Plastic Bottle",
+        benefit: "Turns waste plastic bottles into neat planters, desk organizers, funnel scoops, or hanging herb pots—saving money and reducing plastic clutter.",
+        colors: "Sage Green + Warm Cream + Gold Trim",
+        ideas: "Self-Watering Herb Planter, Study Desk Pen & Brush Stand, Wall Hanging Succulent Pot, Kitchen Scoop",
+        timeCost: "25–40 mins • Very Low Cost",
+        steps: [
+          "Wash & peel off old stickers: Soak the bottle in warm soapy water for 10 minutes, scrub off glue residue, and dry completely.",
+          "Mark your cut line clearly: Use a marker to draw a straight line for a pen stand, a wavy/scalloped line for a cute pot, or cut around the middle to join two halves.",
+          "Cut safely with a utility knife/scissors: Pierce a small starter hole carefully, then cut smoothly along your marked line without forcing sharp bends.",
+          "Smooth cut edges so nobody gets scratched: Run fine sandpaper along the rim or lightly pass a warm iron/hair-dryer edge safely away from fingers.",
+          "Make drainage holes (for planters): Poke 4–5 small holes at the bottom center and place a small piece of mesh or pebbles so soil doesn't wash out.",
+          "Prime the plastic surface: Lightly scuff smooth plastic with fine sandpaper and apply 1 thin coat of acrylic/spray primer so paint grips firmly.",
+          "Paint with your main color: Apply 2 thin coats of Sage Green or Cream paint, letting each coat dry before adding the next.",
+          "Add a pretty design accent: Paint neat vertical stripes, polka dots, or a clean two-tone band near the top lip.",
+          "Pair with a second material: Wrap jute twine, braided yarn, or a cotton fabric strip around the middle and secure with craft glue.",
+          "Add a cute handle or hanger: Punch two opposite holes near the top and thread strong twine or leather cord to hang it or carry it.",
+          "Seal & protect the finish: Apply a clear matte or glossy varnish coat so water splashes and handling won't peel the design.",
+          "Style & test utility: Put a small plant, markers, or kitchen tools inside, wipe clean, and snap a bright photo for Bazaar."
+        ]
+      },
+      ur: {
+        category: "پلاسٹک کی بوتل",
+        benefit: "بیکار پلاسٹک بوتل سے پودوں کا گملہ، پین/برش اسٹینڈ، لٹکنے والا پلانٹر یا کچن اسکوپ بن سکتا ہے—گھر کا خرچ بچتا ہے اور کچرا کم ہوتا ہے۔",
+        colors: "ہلکا سبز + آف وائٹ + سنہری کنارہ",
+        ideas: "گھر کا گملہ، میز پر پین اسٹینڈ، دیوار پر لٹکنے والا پلانٹر، سادہ اسکوپ",
+        timeCost: "25 سے 40 منٹ • نہایت کم خرچ",
+        steps: [
+          "بوتل دھو کر اسٹیکر اتاریں: بوتل کو نیم گرم صابن والے پانی میں 10 منٹ بھگوئیں، گوند صاف کریں اور اچھی طرح خشک کر لیں۔",
+          "کٹائی کا نشان لگائیں: مارکر سے سیدھی لکیر لگائیں (اسٹینڈ کے لیے) یا گول/لہردار ڈیزائن بنائیں (گملے کے لیے)۔",
+          "احتیاط سے کاٹیں: پہلے چھوٹا سا سوراخ کر کے قینچی یا کٹر سے نشان کے ساتھ ساتھ صاف اور ہموار کٹائی کریں۔",
+          "کنارے ہموار کریں: کٹے ہوئے کناروں پر باریک ریگ مال پھیریں تاکہ ہاتھ یا کپڑوں کو خراش نہ آئے۔",
+          "پودے کے لیے سوراخ بنائیں: اگر گملہ بنانا ہے تو نیچے 4–5 باریک سوراخ کریں اور تہہ میں چھوٹے پتھر یا جالی رکھیں۔",
+          "پینٹ کی پکڑ مضبوط کریں: چکنی پلاسٹک پر ہلکا ریگ مال چلائیں یا پرائمر کی ایک پتلی تہہ لگائیں تاکہ رنگ اترے نہ۔",
+          "بنیادی رنگ لگائیں: ہلکا سبز یا آف وائٹ رنگ کے دو پتلے کوٹ لگائیں اور ہر کوٹ کو اچھی طرح خشک ہونے دیں۔",
+          "پیارا ڈیزائن شامل کریں: اوپری حصے کے قریب سادہ دھاریاں، نقطے یا دو رنگا بارڈر بنائیں۔",
+          "دوسری چیز کے ساتھ جوڑیں: بوتل کے درمیان میں جھوٹ کی رسی، اون یا کپڑے کی پٹی لپیٹیں اور گلو سے جما دیں۔",
+          "ہینڈل یا ڈوری لگائیں: اوپر دو مقابل سوراخ کر کے مضبوط رسی یا ڈوری باندھیں تاکہ لٹکانا یا اٹھانا آسان ہو۔",
+          "فنشنگ محفوظ کریں: آخر میں شفاف وارنش یا کلیئر کوٹ لگائیں تاکہ پانی اور ہاتھ لگنے سے ڈیزائن خراب نہ ہو۔",
+          "استعمال یا فروخت کے لیے تیار کریں: اندر پودا یا سامان رکھیں، صاف کپڑے سے پونچھیں اور روشن روشنی میں تصویر لیں۔"
+        ]
+      },
+      hi: {
+        category: "प्लास्टिक की बोतल",
+        benefit: "बेकार प्लास्टिक बोतल से गमला, पेन स्टैंड, हैंगिंग प्लांटर या स्कूप बन सकता है—घरेलू बचत होती है और कचरा घटता है।",
+        colors: "हल्का हरा + क्रीम + सुनहरा बॉर्डर",
+        ideas: "छोटा गमला, स्टडी टेबल पेन स्टैंड, दीवार प्लांटर, किचन स्कूप",
+        timeCost: "25–40 मिनट • बहुत कम ख़र्च",
+        steps: [
+          "धोकर लेबल हटाएं: बोतल को हल्के गर्म साबुन पानी में 10 मिनट भिगोएं, गोंद साफ करें और पूरा सुखा लें।",
+          "काटने का निशान बनाएं: मार्कर से स्टैंड के लिए सीधी लाइन या गमले के लिए सुंदर किनारा बनाएं।",
+          "सावधानी से काटें: छोटा छेद बनाकर कैंची या कटर से निशान के साथ साफ कट लगाएं।",
+          "धार चिकनी करें: कटे किनारों पर बारीक सैंडपेपर घिसें ताकि हाथ न कटे।",
+          "पानी निकलने के छेद करें: गमले के लिए नीचे 4–5 छोटे छेद करें और कंकड़ या जाली रखें।",
+          "प्राइमर या हल्की घिसाई करें: चिकनी सतह पर हल्का सैंडपेपर या प्राइमर लगाएं ताकि रंग टिके।",
+          "मुख्य रंग लगाएं: क्रीम या हल्के हरे रंग की दो पतली परत लगाएं और सूखने दें।",
+          "आकर्षक डिज़ाइन जोड़ें: ऊपरी हिस्से के पास धारियां, डॉट्स या दो-रंगा पैटर्न बनाएं।",
+          "अन्य सामग्री मिलाएं: बीच में जूट की रस्सी, ऊन या कपड़े की पट्टी लपेटकर ग्लू से चिपकाएं।",
+          "डोरी या पकड़ने का हिस्सा जोड़ें: ऊपर दो छेद कर मजबूत रस्सी या पट्टी बांधें।",
+          "सुरक्षा कोट लगाएं: क्लियर कोट या वार्निश लगाएं ताकि पानी या छूने से रंग न उतरे।",
+          "तैयार करें व फोटो लें: अंदर पौधा या सामान रखकर पोंछें और साफ़ रोशनी में फ़ोटो लें।"
+        ]
+      }
+    },
+    jar: {
+      en: {
+        category: "Glass Jar & Scrap",
+        benefit: "Turns empty glass jars and scrap trim into warm lanterns, spice/tea caddies, cotton/jewelry holders, or vase sets.",
+        colors: "Warm Cream + Terracotta / Gold + Jute Twine",
+        ideas: "Fairy-Light / Candle Lantern, Kitchen Spice & Tea Jar, Makeup Brush / Cotton Holder, Table Vase",
+        timeCost: "20–35 mins • Very Low Cost",
+        steps: [
+          "Remove labels & sticky glue: Soak the jar in warm water with dish soap, peel off labels, and wipe remaining glue with a drop of oil or rubbing alcohol.",
+          "Sanitize & dry completely: Rinse clean and dry with a lint-free cloth so glass is crystal clear.",
+          "Prep the metal lid: Wipe the lid clean and lightly sand if there is any rust or old print.",
+          "Paint the lid first: Apply 2 coats of Terracotta, Matte Black, or Gold paint on the lid so it looks like a custom boutique jar.",
+          "Wrap neck or base with cord/lace: Tie or glue jute twine, cotton lace, or fabric ribbon neatly around the neck or base.",
+          "Add a soft frosted or tinted look (optional): Dab a thin layer of frosted glass effect or pastel paint on half the jar for depth.",
+          "Create a pretty pattern: Use masking tape to make clean geometric bands or paint delicate botanical leaves/dots.",
+          "Add a carrying handle: Twist thick twine or wire around the neck and form a sturdy loop handle.",
+          "Set up inside lighting or storage: Place warm LED fairy lights/tea-light inside for a lantern, or fill with spices/beans/buttons.",
+          "Check lid seal & balance: Make sure the lid screws on smoothly and the jar sits flat without wobbling.",
+          "Add a neat label tag: Tie a small kraft paper tag with the item name or use.",
+          "Photograph in warm/natural light: Shoot against a clean surface showing both the lid detail and practical use."
+        ]
+      },
+      ur: {
+        category: "شیشے کا جار اور بچا سامان",
+        benefit: "خالی جار اور سادہ ڈوری/کپڑے سے خوبصورت لالٹین، مصالحے/چائے کا ڈبہ، جیولری/برش ہولڈر یا گلدان بن سکتا ہے۔",
+        colors: "آف وائٹ + ٹراکوٹا/سنہری + جوٹ رسی",
+        ideas: "لائٹ لالٹین، کچن مصالحہ/چائے جار، برش/کپڑے ہولڈر، سادہ گلدان",
+        timeCost: "20 سے 35 منٹ • بہت کم خرچ",
+        steps: [
+          "اسٹیکر اور گوند صاف کریں: جار کو گرم صابن والے پانی میں بھگوئیں، لیبل اتاریں اور گوند صاف کریں۔",
+          "اچھی طرح دھو کر خشک کریں: جار کو صاف کپڑے سے خشک کریں تاکہ شیشہ چمکدار رہے۔",
+          "ڈھکن تیار کریں: دھاتی ڈھکن صاف کریں اور اگر زنگ یا پرانی لکھائی ہو تو ہلکا ریگ مال لگائیں۔",
+          "ڈھکن کو پیارا رنگ دیں: ڈھکن پر ٹراکوٹا، سنہری یا میٹ رنگ کے دو کوٹ لگائیں تاکہ نیا اور قیمتی لگے۔",
+          "گردن یا پیندے پر رسی/لیس لگائیں: گردن یا نیچے کے حصے پر جوٹ کی رسی، لیس یا کپڑے کی پٹی گلو سے لگائیں۔",
+          "ہلکا فروسٹ یا شیڈ دیں: ڈیزائن کو دلکش بنانے کے لیے ہلکا ہاف-فروسٹ یا رنگین شیڈ دیں۔",
+          "صاف ڈیزائن بنائیں: ٹیپ کی مدد سے سیدھی پٹیاں یا سادہ پھول/پتیوں کا پیٹرن بنائیں۔",
+          "اٹھانے کے لیے ہینڈل بنائیں: گردن کے گرد مضبوط رسی یا تار لپیٹ کر ہینڈل تیار کریں۔",
+          "اندر کا استعمال سیٹ کریں: لالٹین کے لیے وارم لائٹ ڈالیں یا مصالحے، چائے، بٹن یا سامان رکھیں۔",
+          "ڈھکن اور توازن چیک کریں: دیکھیں ڈھکن آسانی سے بند ہو اور جار میز پر سیدھا ٹکا رہے۔",
+          "چھوٹا سا ٹیگ لگائیں: ڈوری کے ساتھ سادہ کاغذ کا ٹیگ لگا کر چیز کا فائدہ لکھیں۔",
+          "صاف تصویر لیں: روشن روشنی میں ڈھکن اور اندر کے فائدے کے ساتھ صاف تصویر لیں۔"
+        ]
+      },
+      hi: {
+        category: "काँच का जार और बची सामग्री",
+        benefit: "खाली जार और साधारण रस्सी/कपड़े से सुंदर लैंप/लालटेन, मसाला/चाय जार, ब्रश होल्डर या वाज़ बनाया जा सकता है।",
+        colors: "क्रीम + टेराकोटा/गोल्ड + जूट रस्सी",
+        ideas: "वार्म लाइट जार, मसाला/चाय कंटेनर, ब्रश/स्टेशनरी होल्डर, टेबल वाज़",
+        timeCost: "20–35 मिनट • बहुत कम ख़र्च",
+        steps: [
+          "लेबल और गोंद हटाएं: जार को गर्म साबुन पानी में भिगोएं, लेबल निकालें और गोंद साफ़ करें।",
+          "धोकर पूरा सुखाएं: साफ़ कपड़े से पोंछकर सुखाएं ताकि काँच चमकदार दिखे।",
+          "ढक्कन तैयार करें: ढक्कन साफ़ करें और ज़रूरत हो तो हल्का सैंडपेपर या प्राइमर लगाएं।",
+          "ढक्कन पर सुंदर रंग करें: ढक्कन पर गोल्ड, टेराकोटा या मैट रंग के दो कोट लगाएं।",
+          "रस्सी या लेस लपेटें: गर्दन या निचले हिस्से पर जूट कॉर्ड, लेस या कपड़े की पट्टी लगाएं।",
+          "हल्का डिज़ाइन इफ़ेक्ट दें: आधे हिस्से पर हल्का रंग या फ़्रॉस्ट लुक देकर गहराई लाएं।",
+          "साफ़ पैटर्न बनाएं: टेप की मदद से सीधी पट्टियां या सरल पत्तियां/डॉट्स बनाएं।",
+          "हैंडल बनाएं: गर्दन के चारों ओर मज़बूत रस्सी लपेटकर पकड़ने का लूप बनाएं।",
+          "भीतर का उपयोग तय करें: लाइट डालें या मसाले, चाय, स्टेशनरी या छोटा सामान रखें।",
+          "ढक्कन व संतुलन जांचें: देखें कि ढक्कन सही फिट हो और जार स्थिर रहे।",
+          "सुंदर टैग जोड़ें: धागे में छोटा सा टैग लगाकर नाम या उपयोग लिखें।",
+          "साफ़ फ़ोटो लें: अच्छी रोशनी में स्पष्ट फ़ोटो लें ताकि डिज़ाइन साफ़ दिखे।"
+        ]
+      }
+    },
+    denim: {
+      en: {
+        category: "Old Jeans / Fabric",
+        benefit: "Transforms worn jeans or leftover fabric into sturdy tote bags, tool/pencil pouches, cushion covers, or pocket organizers.",
+        colors: "Classic Indigo + Mustard / Cream + Contrast Stitching",
+        ideas: "Everyday Tote Bag, Zippered/Buttoned Pouch, Cushion Cover, Wall Pocket Organizer",
+        timeCost: "35–60 mins • Low Cost",
+        steps: [
+          "Wash & press the fabric: Wash the old jeans/cloth cleanly and iron flat so measurements and cuts stay straight.",
+          "Cut the main body panel: Measure and cut a clean rectangle from the sturdy leg or fabric section, leaving a 1.5 cm seam allowance.",
+          "Reuse existing pockets: Cut out back or front pockets neatly—they make instant outside pockets for phones, pens, or small items.",
+          "Add a lining (optional but neat): Cut a matching cotton/scrap inner lining so the inside looks clean and hides raw seams.",
+          "Sew or bond side & bottom seams: Stitch along the sides and bottom with strong thread (or use heavy-duty fabric glue/hem tape if no machine).",
+          "Box the bottom corners: Fold bottom corners into triangles and stitch/secure across so the bag or pouch stands up nicely.",
+          "Make straps or handles: Cut two long strips (or use a jean waistband/belt strap), fold edges inward, and stitch/secure firmly.",
+          "Attach handles with X-reinforcement: Fix handles evenly on both sides and add extra stitching or a decorative button at the join.",
+          "Add a closure: Add a simple button loop, snap, zipper, or fabric tie at the top opening.",
+          "Add pretty trim or patch: Sew or glue contrast fabric trim, embroidery, or a neat patch on one corner.",
+          "Trim loose threads & press: Snip all hanging threads and press lightly with a steam/warm iron.",
+          "Shape & photograph: Stuff lightly with tissue/paper so the shape looks full and neat for your listing."
+        ]
+      },
+      ur: {
+        category: "پرانی جینز یا کپڑا",
+        benefit: "پرانی جینز یا بچے کپڑے سے مضبوط شاپنگ/ہینڈ بیگ، پین/سامان پاؤچ، کشن کور یا دیوار کا پاکٹ آرگنائزر بن سکتا ہے۔",
+        colors: "نیلا/انڈیگو + سرسوں/آف وائٹ + نمایاں سلائی",
+        ideas: "روزمرہ ہینڈ/ٹوٹ بیگ، پاؤچ، کشن کور، دیوار کا پاکٹ ہولڈر",
+        timeCost: "35 سے 60 منٹ • کم خرچ",
+        steps: [
+          "دھو کر استری کریں: کپڑے یا جینز کو دھو کر استری کریں تاکہ کٹائی بالکل سیدھی آئے۔",
+          "بنیادی ٹکڑا کاٹیں: مضبوط حصے سے ناپ کر مستطیل ٹکڑا کاٹیں اور کناروں پر تھوڑی اضافی جگہ چھوڑیں۔",
+          "جیبوں کا فائدہ اٹھائیں: جینز کی جیبیں کاٹ کر باہر لگا دیں—موبائل یا چھوٹی چیز رکھنے کے لیے بہترین ہیں۔",
+          "اندرونی استر لگائیں: اندر سے صاف لک کے لیے سادہ کپڑے کا استر جوڑیں تاکہ کچے کنارے چھپ جائیں۔",
+          "سائیڈ اور نیچے کا حصہ جوڑیں: کناروں کو مضبوط سلائی یا فیبرک گلو سے جوڑیں۔",
+          "تہہ کو گہرائی دیں: نیچے کے کونوں کو موڑ کر سی لیں تاکہ بیگ یا پاؤچ کھڑا ہو سکے۔",
+          "پٹیاں/ہینڈل بنائیں: کپڑے کی لمبی پٹیاں کاٹ کر اندر کی طرف موڑیں اور مضبوط بنائیں۔",
+          "ہینڈل مضبوط جوڑیں: دونوں طرف برابر فاصلے پر ہینڈل لگائیں اور جوڑ پر اضافی ٹانکا یا بٹن لگائیں۔",
+          "بند کرنے کا طریقہ لگائیں: اوپر بٹن، لوپ، زپ یا ڈوری لگائیں تاکہ سامان محفوظ رہے۔",
+          "پیارا ڈیزائن شامل کریں: ایک کونے پر مختلف رنگ کی پٹی، پیچ یا سادہ کڑھائی لگائیں۔",
+          "دھاگے کاٹیں اور استری کریں: فالتو دھاگے کاٹیں اور ہلکی استری سے شکل بٹھا لیں۔",
+          "صاف تصویر لیں: بیگ کو ہلکا سا بھر کر سیدھا رکھیں اور روشن جگہ پر تصویر لیں۔"
+        ]
+      },
+      hi: {
+        category: "पुरानी जींस या कपड़ा",
+        benefit: "पुरानी जींस या बचे कपड़े से मज़बूत टोट बैग, पाउच, कुशन कवर या वॉल पॉकेट ऑर्गनाइज़र बन सकता है।",
+        colors: "इंडिगो/नीला + मस्टर्ड/क्रीम + आकर्षक सिलाई",
+        ideas: "टोट बैग, ज़िप/बटन पाउच, कुशन कवर, दीवार पॉकेट होल्डर",
+        timeCost: "35–60 मिनट • कम ख़र्च",
+        steps: [
+          "धोकर प्रेस करें: कपड़े को धोकर अच्छी तरह प्रेस करें ताकि नाप और कटिंग सटीक रहे।",
+          "मुख्य हिस्सा काटें: मज़बूत हिस्से से सही नाप का आयताकार टुकड़ा काटें।",
+          "जेबों का उपयोग करें: जींस की जेबें निकालकर बाहर लगाएं—छोटी चीज़ों के लिए बहुत काम आती हैं।",
+          "अस्तर जोड़ें: अंदर की साफ़ फ़िनिश के लिए हल्के कपड़े का अस्तर लगाएं।",
+          "किनारे जोड़ें: साइड और नीचे के हिस्से को मज़बूत सिलाई या फ़ैब्रिक ग्लू से जोड़ें।",
+          "नीचे का आधार बनाएं: कोनों को मोड़कर पक्का करें ताकि बैग/पाउच सही शेप ले।",
+          "हैंडल/पट्टियां बनाएं: पट्टियां तैयार करें ताकि पकड़ने में आरामदायक हों।",
+          "हैंडल मज़बूत लगाएं: दोनों ओर बराबर दूरी पर हैंडल लगाकर जोड़ को पक्का करें।",
+          "बंद करने का सिस्टम लगाएं: बटन, लूप या डोरी लगाएं ताकि अंदर का सामान सुरक्षित रहे।",
+          "सुंदर डिज़ाइन जोड़ें: पैच, बॉर्डर या साधारण कढ़ाई से लुक निखारें।",
+          "धागे काटें व प्रेस करें: एक्स्ट्रा धागे काटकर हल्की प्रेस से आकार सेट करें।",
+          "फ़ोटो लें: आकार ठीक करके साफ़ रोशनी में फ़ोटो लें।"
+        ]
+      }
+    },
+    chair: {
+      en: {
+        category: "Worn Chair / Wood",
+        benefit: "Restores wobbly chairs, wooden boards, or scrap wood into sturdy seating, plant stools, side tables, or wall shelves.",
+        colors: "Warm Walnut / Oak + Soft Cream + Brass/Black Accent",
+        ideas: "Plant Pedestal Stool, Bedside / Corner Step Stool, Repaired Dining Chair, Wall Display Shelf",
+        timeCost: "45–90 mins • Moderate Effort, High Value",
+        steps: [
+          "Inspect joints & loose parts: Check legs, rungs, and seat screws; wiggle gently to find every loose joint.",
+          "Clean dust & grease: Wipe wood with a slightly damp cloth and mild soap, then dry thoroughly.",
+          "Tighten or reglue loose joints: Apply wood glue into loose joints, clamp or tie tightly for 12+ hours, and add screws/brackets where needed.",
+          "Sand rough wood smooth: Sand the surface with medium (120-grit) sandpaper first, then smooth with fine (220-grit) sandpaper along the wood grain.",
+          "Wipe away sanding dust: Clean every speck of sawdust with a dry/slightly damp cloth before painting or staining.",
+          "Choose wood stain or paint: Use wood stain/oil to show natural grain, or prime and paint for a fresh modern look.",
+          "Refresh the seat or top: Recover a worn seat pad with fresh foam + fabric/vinyl, or smooth the wooden top evenly.",
+          "Apply a two-tone or pretty finish: Keep legs in a rich tone and the seat/top in a complementary shade (or vice versa).",
+          "Add protective foot pads: Stick felt or rubber pads under all legs so floors don't get scratched and the chair sits level.",
+          "Seal with clear coat: Apply 1–2 thin coats of clear wood varnish or wax for durability.",
+          "Test stability & weight: Press down firmly to verify there is zero wobble and all fasteners are tight.",
+          "Stage in good light: Place near a window or wall with a plant or book and take a clear photo."
+        ]
+      },
+      ur: {
+        category: "پرانی کرسی یا لکڑی",
+        benefit: "ڈھیلی کرسی یا پرانی لکڑی کو مضبوط کر کے پودے کا اسٹینڈ، سائیڈ اسٹول، بیٹھنے کی کرسی یا دیوار کی شیلف بنایا جا سکتا ہے۔",
+        colors: "اخروٹی/بھورے کے ساتھ آف وائٹ یا سیاہ فنش",
+        ideas: "پودے کا اسٹینڈ، سائیڈ/فٹ اسٹول، مضبوط کرسی، دیوار کی شیلف",
+        timeCost: "45 سے 90 منٹ • اچھی قیمت مل سکتی ہے",
+        steps: [
+          "ڈھیلے جوڑ چیک کریں: ٹانگوں، پٹیوں اور سیٹ کو دیکھیں کہ کہاں سے ہل رہی ہے یا جوڑ کمزور ہے۔",
+          "گرد و غبار صاف کریں: ہلکے گیلے کپڑے سے صاف کریں اور مکمل خشک ہونے دیں۔",
+          "جوڑ مضبوط کریں: ڈھیلے جوڑوں میں ووڈ گلو بھریں، مضبوط باندھیں یا اسکرو/بریکٹ لگائیں۔",
+          "لکڑی ہموار کریں: پہلے درمیانے اور پھر باریک ریگ مال سے لکڑی کے رخ پر رگڑ کر ہموار کریں۔",
+          "برادہ اچھی طرح جھاڑیں: رنگ یا پالش سے پہلے ساری دھول اور برادہ صاف کر لیں۔",
+          "پالش یا رنگ چنیں: لکڑی کا قدرتی دانہ دکھانا ہو تو پالش/تیل لگائیں، ورنہ پرائمر کر کے رنگ کریں۔",
+          "سیٹ کو نیا بنائیں: پرانی گدی یا سیٹ کو نئے کپڑے یا ہموار لکڑی کے تختے سے تازہ کریں۔",
+          "خوبصورت رنگوں کا توازن رکھیں: ایک گہرے رنگ کے ساتھ ایک ہلکا رنگ ملا کر دلکش لک دیں۔",
+          "پیندے پر پیڈ لگائیں: ٹانگوں کے نیچے ربڑ یا فیبرک پیڈ لگائیں تاکہ فرش پر نشان نہ پڑے اور کرسی نہ ڈولے۔",
+          "حفاظتی کوٹ لگائیں: پائیداری کے لیے کلیئر وارنش یا ویکس کی تہہ لگائیں۔",
+          "مضبوطی چیک کریں: دبا کر دیکھیں کہ جوڑ مضبوط ہیں اور کرسی بالکل سیدھی ٹکی ہے۔",
+          "بہترین تصویر لیں: روشن جگہ پر پودے یا سادہ پس منظر کے ساتھ صاف تصویر لیں۔"
+        ]
+      },
+      hi: {
+        category: "पुरानी कुर्सी या लकड़ी",
+        benefit: "डगमगाती कुर्सी या पुरानी लकड़ी को ठीक करके पौधे का स्टैंड, साइड स्टूल, कुर्सी या शेल्फ बनाया जा सकता है।",
+        colors: "वॉलनट/ब्राउन + क्रीम या मैट ब्लैक",
+        ideas: "प्लांट स्टैंड, साइड/फुट स्टूल, मज़बूत कुर्सी, वॉल शेल्फ",
+        timeCost: "45–90 मिनट • बढ़िया उपयोग व मूल्य",
+        steps: [
+          "ढीले जोड़ जांचें: पायों, पट्टियों और सीट को देखकर ढीले या टूटे जोड़ पहचानें।",
+          "धूल व गंदगी साफ़ करें: हल्के नम कपड़े से पोंछें और पूरी तरह सूखने दें।",
+          "जोड़ मज़बूत करें: लकड़ी के गोंद (वुड ग्लू), स्क्रू या क्लैंप/रस्सी से जोड़ कसकर पक्का करें।",
+          "सैंडपेपर से चिकना करें: लकड़ी के रेशे की दिशा में सैंडपेपर घिसकर सतह चिकनी करें।",
+          "धूल-बुरादा झाड़ें: पेंट या पॉलिश से पहले सारी धूल साफ़ कर लें।",
+          "पॉलिश या पेंट चुनें: लकड़ी का प्राकृतिक टेक्सचर रखना हो तो पॉलिश करें या प्राइमर लगाकर पेंट करें।",
+          "सीट/ऊपरी हिस्सा संवारें: पुरानी सीट को नए कपड़े/कवर से साफ़ और आकर्षक बनाएं।",
+          "रंगों का संतुलन रखें: गहरे और हल्के रंग के मेल से साफ़ व सुंदर रूप दें।",
+          "पायों के नीचे पैड लगाएं: फ़र्श बचाने और संतुलन के लिए नीचे पैड लगाएं।",
+          "सुरक्षा कोट लगाएं: टिकाऊपन के लिए क्लियर कोट या वैक्स लगाएं।",
+          "मज़बूती जांचें: दबाकर देखें कि कुर्सी हिलती नहीं है और जोड़ मज़बूत हैं।",
+          "अच्छी फ़ोटो लें: साफ़ रोशनी में स्पष्ट फ़ोटो लें।"
+        ]
+      }
+    },
+    general: {
+      en: {
+        category: "Everyday / Custom Item",
+        benefit: "Every item has a practical second life—either repaired cleanly for daily use or upcycled into a useful, eye-catching piece.",
+        colors: "Clean Neutral Base + 1 Accent Color + Natural Trim",
+        ideas: "Everyday Utility Organizer, Repaired Functional Item, Giftable Decor/Storage Piece, Clean Bazaar Listing",
+        timeCost: "20–45 mins • Easy DIY",
+        steps: [
+          "Inspect the whole item first: Check what works, what is worn or loose, and which part is strongest.",
+          "Clean thoroughly: Remove dust, oil, stickers, or grime using mild soap and a soft cloth suited to the surface.",
+          "Fix loose or broken parts: Re-glue, tape, tighten, or reinforce weak spots so the structure feels solid.",
+          "Plan the best practical use: Decide whether it works best as storage, a holder/stand, a cover, or a restored daily item.",
+          "Shape or trim cleanly: Cut away frayed edges, uneven flaps, or excess bits with steady, careful strokes.",
+          "Smooth rough edges: Sand, file, or fold edges neatly so it feels safe and pleasant to touch.",
+          "Pick a harmonious color scheme: Choose 1 main color and 1 matching accent color rather than too many clashing shades.",
+          "Prep before coloring: Lightly scuff smooth surfaces or apply a thin base coat so color adheres evenly.",
+          "Apply design & texture: Add neat stripes, borders, stitching, twine, or a clean label for visual charm.",
+          "Check balance & finish: Make sure it sits flat, opens/closes smoothly, and has no stray glue or loose ends.",
+          "Add a clear benefit line: When sharing or posting, state in one line what problem this item solves.",
+          "Take a bright, clear photo: Shoot in natural light against a clean background so buyers/viewers see the quality."
+        ]
+      },
+      ur: {
+        category: "کوئی بھی روزمرہ چیز",
+        benefit: "ہر چیز کا کوئی نہ کوئی عملی فائدہ ضرور ہوتا ہے—یا تو اسے ٹھیک کر کے روزمرہ استعمال میں لایا جا سکتا ہے یا نئی کارآمد شکل دی جا سکتی ہے۔",
+        colors: "صاف ہلکا بنیادی رنگ + ایک نمایاں رنگ + سادہ کنارہ",
+        ideas: "روزمرہ اسٹوریج/ہولڈر، مرمت شدہ کارآمد چیز، تحفے یا گھر کی سجاوٹ کا پیس",
+        timeCost: "20 سے 45 منٹ • آسان گھریلو طریقہ",
+        steps: [
+          "چیز کا بغور جائزہ لیں: دیکھیں کون سا حصہ ٹھیک ہے، کہاں خرابی یا ڈھیلا پن ہے، اور کون سا حصہ مضبوط ہے۔",
+          "اچھی طرح صفائی کریں: گرد، چکنائی یا پرانے نشان چیز کی نوعیت کے مطابق صاف کریں۔",
+          "کمزور یا ٹوٹے حصے جوڑیں: گلو، ٹیپ، سلائی یا سادہ سہارے سے جوڑ مضبوط کریں۔",
+          "بہترین فائدہ طے کریں: سوچیں یہ چیز اسٹوریج، ہولڈر، کور یا مرمت کے بعد روزمرہ کام میں کیسے بہترین لگے گی۔",
+          "فالتو یا خراب کنارے کاٹیں: کھرچا یا بکھرا ہوا حصہ احتیاط سے کاٹ کر برابر کریں۔",
+          "کنارے ہموار کریں: ریگ مال، فائل یا موڑنے کے طریقے سے کناروں کو نرم اور محفوظ بنائیں۔",
+          "رنگوں کا انتخاب کریں: بہت زیادہ رنگوں کے بجائے ایک بنیادی رنگ اور ایک ہم آہنگ رنگ چنیں۔",
+          "رنگ یا ڈیزائن کے لیے تیار کریں: چکنی سطح کو ہلکا ہموار کریں یا بیس کوٹ لگائیں تاکہ رنگ پکا بیٹھے۔",
+          "پیارا ڈیزائن اور فنشنگ دیں: سادہ پٹی، رسی، ڈوری یا صاف ڈیزائن سے چیز کو دلکش بنائیں۔",
+          "توازن اور مضبوطی چیک کریں: دیکھیں چیز سیدھی ٹکی ہو، حرکت میں آسان ہو اور کوئی ڈھیلا سرا نہ ہو۔",
+          "فائدہ واضح لکھیں: لوگوں کو بتاتے وقت ایک جملے میں لکھیں کہ اس چیز سے کیا فائدہ ملے گا۔",
+          "روشن جگہ پر صاف تصویر لیں: قدرتی روشنی اور صاف پس منظر میں تصویر لیں تاکہ دلکشی واضح نظر آئے۔"
+        ]
+      },
+      hi: {
+        category: "कोई भी रोज़मर्रा की चीज़",
+        benefit: "हर चीज़ का व्यावहारिक फ़ायदा होता है—या तो मरम्मत करके दोबारा उपयोग में लाएं या सुंदर और उपयोगी रूप दें।",
+        colors: "साफ़ हल्का बेस रंग + एक आकर्षक रंग + साधारण किनारा",
+        ideas: "ऑर्गनाइज़र/होल्डर, मरम्मत की हुई उपयोगी चीज़, सजावट या स्टोरेज आइटम",
+        timeCost: "20–45 मिनट • आसान तरीका",
+        steps: [
+          "चीज़ को ध्यान से देखें: जांचें कि कौन-सा हिस्सा मज़बूत है और कहाँ मरम्मत या सुधार की ज़रूरत है।",
+          "अच्छी तरह साफ़ करें: सतह के अनुसार धूल, चिकनाई या पुराने निशान साफ़ करें।",
+          "कमज़ोर हिस्से जोड़ें: ग्लू, टेप, सिलाई या सहारे से ढीले हिस्सों को मज़बूत करें।",
+          "सही उपयोग चुनें: तय करें कि यह स्टोरेज, होल्डर, कवर या सामान्य उपयोग के लिए सबसे अच्छा कैसे रहेगा।",
+          "अतिरिक्त या खराब किनारा काटें: ढीले या खुरदुरे हिस्सों को सावधानी से काटकर बराबर करें।",
+          "किनारे चिकने करें: सैंडपेपर या फ़ोल्डिंग से किनारों को सुरक्षित और साफ़ बनाएं।",
+          "रंगों का सही मेल चुनें: ज़्यादा रंगों के बजाय एक मुख्य रंग और एक मेल खाता रंग रखें।",
+          "सतह तैयार करें: चिकनी सतह पर हल्का रफ या बेस कोट लगाएं ताकि रंग अच्छे से टिके।",
+          "आकर्षक डिज़ाइन जोड़ें: बॉर्डर, कॉर्ड, पैटर्न या फ़िनिश जोड़कर चीज़ को सुंदर बनाएं।",
+          "संतुलन और मजबूती देखें: जांचें कि चीज़ सही टिकी हो और कहीं से ढीली न हो।",
+          "फ़ायदा स्पष्ट बताएं: एक लाइन में बताएं कि इस चीज़ से क्या काम आसान होगा।",
+          "अच्छी रोशनी में फ़ोटो लें: साफ़ बैकग्राउंड और रोशनी में स्पष्ट फ़ोटो लें।"
+        ]
+      }
+    }
+  };
+
+  function detectItemKey(titleText) {
+    const s = (titleText || "").toLowerCase();
+    if (s.includes("bottle") || s.includes("cola") || s.includes("plastic") || s.includes("بوتل") || s.includes("बोतल")) return "bottle";
+    if (s.includes("jar") || s.includes("glass") || s.includes("lantern") || s.includes("spice") || s.includes("جار") || s.includes("شیشہ") || s.includes("जार") || s.includes("काँच")) return "jar";
+    if (s.includes("jean") || s.includes("denim") || s.includes("fabric") || s.includes("cloth") || s.includes("pouch") || s.includes("tote") || s.includes("جینز") || s.includes("کپڑا") || s.includes("जींस") || s.includes("कपड़ा")) return "denim";
+    if (s.includes("chair") || s.includes("wood") || s.includes("stool") || s.includes("table") || s.includes("shelf") || s.includes("کرسی") || s.includes("لکڑی") || s.includes("कुर्सी") || s.includes("लकड़ी")) return "chair";
+    return "general";
+  }
+
+  function wantsUrduOrHindi(text) {
+    const s = (text || "").toLowerCase();
+    if (/[\u0600-\u06FF]/.test(s)) return "ur";
+    if (/[\u0900-\u097F]/.test(s)) return "hi";
+    if (s.includes("urdu") || s.includes("roman") || s.includes("bato") || s.includes("batao") || s.includes("samjhao")) return "ur";
+    return null;
+  }
 
   const I18N = {
     en: {
       tagline: "Photo → Guaranteed Benefit & Pretty Design",
       aiHeading: "Snap or Upload Any Item Photo",
-      aiSub: "No 'what item is this' list needed. Just upload a photo—every item gets a practical repair or upcycle benefit and easy steps for a pretty design.",
+      aiSub: "Upload any photo or type any item name—every item gets a practical repair/upcycle benefit, color & design ideas, and 12 step-by-step instructions.",
       dropLabel: "Tap to Take / Upload Photo",
       dropHint: "Or choose a sample photo below to test right away",
       genBtn: "✨ Get Benefit & Pretty Design Guide",
       postBtn: "🛍️ Post Item to Bazaar",
-      stepsHeading: "Easy Steps for a Pretty Design:",
+      stepsHeading: "12 Step-by-Step Instructions (Do This, Then That):",
       benefitTag: "Guaranteed Benefit",
-      benefitText: (title) => `Every item delivers practical value: "${title}" can either be repaired for everyday utility or upcycled into a clean, attractive piece so zero useful material goes to waste.`,
-      steps: [
-        "Clean & Reinforce: Wipe away dust, grease, or loose flakes, and strengthen weak joints or edges with strong glue, tape, or simple fasteners.",
-        "Shape with Everyday Supplies: Use simple home items—scissors, sandpaper/file, twine, fabric scraps, or leftover paint—to form a balanced, functional shape.",
-        "Smooth & Align Edges: Sand or trim rough corners and check alignment so the piece feels sturdy, safe, and intentional.",
-        "Pretty Design Finish: Add a harmonious color accent, clean border/trim, or tidy wrap so it looks charming, neat, and ready to use or sell."
-      ],
-      qaHeading: "💬 Ask Anything Else About This Item or Design",
-      followUp: (qType) => {
-        if (qType === "color") return "Pair 1 main tone with 1 warm accent (like soft cream + terracotta or sage + warm wood) and keep hardware/trim consistent for a high-end look.";
-        if (qType === "tools") return "You don't need power tools: household scissors, a nail file or fine sandpaper, white/craft glue, and cord or fabric strips work well for neat results.";
-        return "Clean photos in bright natural light, highlight the practical benefit in the first line, and price fairly based on condition and effort.";
-      }
+      qaHeading: "💬 Ask Anything Else About This Item or Design"
     },
     ur: {
       tagline: "تصویر → ہر چیز کا فائدہ اور پیارا ڈیزائن",
-      aiHeading: "کسی بھی چیز کی تصویر لیں یا اپلوڈ کریں",
-      aiSub: "کسی فہرست میں 'یہ کون سی چیز ہے' منتخب کرنے کی ضرورت نہیں۔ بس تصویر دیں—ہر چیز سے مرمت یا ری یوز کا عملی فائدہ اور پیارا ڈیزائن بنانے کے آسان طریقے ملیں گے۔",
+      aiHeading: "کسی بھی چیز کی تصویر لیں یا نام لکھیں",
+      aiSub: "کوئی بھی تصویر یا چیز کا نام دیں—ہر چیز کے لیے عملی فائدہ، رنگ و ڈیزائن کے مشورے اور 12 آسان مرحلہ وار طریقے ملیں گے۔",
       dropLabel: "تصویر لینے یا اپلوڈ کرنے کے لیے دبائیں",
       dropHint: "یا فوراً چیک کرنے کے لیے نیچے کوئی نمونہ تصویر چنیں",
       genBtn: "✨ فائدہ اور پیارا ڈیزائن گائیڈ حاصل کریں",
       postBtn: "🛍️ بازار میں پوسٹ کریں",
-      stepsHeading: "پیارا ڈیزائن بنانے کے آسان مراحل:",
+      stepsHeading: "12 مرحلہ وار مکمل گائیڈ (پہلے یہ کریں، پھر یہ):",
       benefitTag: "یقینی فائدہ",
-      benefitText: (title) => `ہر چیز سے کوئی نہ کوئی فائدہ ضرور نکلتا ہے: "${title}" کو یا تو مرمت کر کے روزمرہ استعمال کے قابل بنایا جا سکتا ہے یا خوبصورت نئی شکل دے کر کارآمد بنایا جا سکتا ہے تاکہ کچھ بھی ضائع نہ جائے۔`,
-      steps: [
-        "صفائی اور مضبوطی: گرد و غبار یا ڈھیلے حصے صاف کریں اور کمزور جوڑ یا کنارے گلو، ٹیپ یا سادہ فاسنر سے مضبوط بنائیں۔",
-        "گھر کے عام سامان سے شکل دیں: قینچی، ریگ مال/فائل، رسی، کپڑے کے ٹکڑے یا بچے ہوئے رنگ کی مدد سے متوازن اور کارآمد شکل تیار کریں۔",
-        "کنارے ہموار کریں: کھردرے کونوں کو ہموار کریں تاکہ چیز محفوظ، پائیدار اور صاف ستھری نظر آئے۔",
-        "پیاری فنشنگ دیں: مناسب رنگ، کنارے کی پٹی یا سادہ ڈیزائن شامل کریں تاکہ چیز دلکش اور بیچنے یا استعمال کے لائق لگے۔"
-      ],
-      qaHeading: "💬 اس چیز یا ڈیزائن کے بارے میں کچھ بھی مزید پوچھیں",
-      followUp: (qType) => {
-        if (qType === "color") return "ایک بنیادی رنگ کے ساتھ ایک ہلکا یا گرم رنگ ملائیں (جیسے آف وائٹ کے ساتھ ہلکا براؤن یا سبز) تاکہ ڈیزائن بھاری نہ لگے اور پیارا نظر آئے۔";
-        if (qType === "tools") return "مہنگے اوزار ضروری نہیں؛ عام قینچی، باریک ریگ مال، گلو، رسی یا کپڑے کی پٹی سے بھی بہترین اور صاف کام ہو سکتا ہے۔";
-        return "روشن روشنی میں صاف تصویر لیں، پہلے جملے میں چیز کا فائدہ واضح کریں، اور محنت و حالت کے مطابق مناسب قیمت رکھیں۔";
-      }
+      qaHeading: "💬 اس چیز یا ڈیزائن کے بارے میں کچھ بھی مزید پوچھیں"
     },
     hi: {
       tagline: "फ़ोटो → हर चीज़ का फ़ायदा और प्यारा डिज़ाइन",
-      aiHeading: "किसी भी चीज़ की फ़ोटो लें या अपलोड करें",
-      aiSub: "'यह कौन सी चीज़ है' चुनने की ज़रूरत नहीं। बस फ़ोटो डालें—हर चीज़ से मरम्मत या दोबारा इस्तेमाल का फ़ायदा और प्यारा डिज़ाइन बनाने के आसान क़दम मिलेंगे।",
+      aiHeading: "किसी भी चीज़ की फ़ोटो लें या नाम लिखें",
+      aiSub: "कोई भी फ़ोटो या चीज़ का नाम डालें—हर चीज़ के लिए व्यावहारिक फ़ायदा, रंग व डिज़ाइन सुझाव और 12 आसान चरण-दर-चरण निर्देश मिलेंगे।",
       dropLabel: "फ़ोटो लेने या अपलोड करने के लिए टैप करें",
       dropHint: "या तुरंत जांचने के लिए नीचे कोई सैंपल फ़ोटो चुनें",
       genBtn: "✨ फ़ायदा और प्यारा डिज़ाइन गाइड पाएं",
       postBtn: "🛍️ बाज़ार में पोस्ट करें",
-      stepsHeading: "प्यारा डिज़ाइन बनाने के आसान क़दम:",
+      stepsHeading: "12 चरण-दर-चरण पूरी गाइड (पहले यह करें, फिर यह):",
       benefitTag: "पक्का फ़ायदा",
-      benefitText: (title) => `हर चीज़ से कोई न कोई फ़ायदा ज़रूर मिलता है: "${title}" को या तो ठीक करके रोज़मर्रा के काम में लाया जा सकता है या सुंदर रूप देकर उपयोगी बनाया जा सकता है।`,
-      steps: [
-        "सफ़ाई और मज़बूती: धूल या ढीले हिस्से साफ़ करें और कमज़ोर जोड़ या किनारों को ग्लू, टेप या सरल सहारे से मज़बूत करें।",
-        "घर के सामान से आकार दें: कैंची, सैंडपेपर, रस्सी, कपड़े के टुकड़े या बचे हुए पेंट से संतुलित और उपयोगी आकार बनाएं।",
-        "किनारे चिकने करें: खुरदुरे किनारों को चिकना करें ताकि चीज़ मज़बूत, सुरक्षित और साफ़ दिखे।",
-        "प्यारी फ़िनिश दें: मेल खाता रंग, बॉर्डर या साधारण सजावट जोड़ें ताकि चीज़ आकर्षक और इस्तेमाल या बिक्री के लिए तैयार दिखे।"
-      ],
-      qaHeading: "💬 इस चीज़ या डिज़ाइन के बारे में कुछ भी और पूछें",
-      followUp: (qType) => {
-        if (qType === "color") return "एक मुख्य रंग के साथ एक संतुलित रंग रखें (जैसे क्रीम के साथ हल्का भूरा या हरा) ताकि डिज़ाइन साफ़ और आकर्षक दिखे।";
-        if (qType === "tools") return "भारी मशीनों की ज़रूरत नहीं; साधारण कैंची, सैंडपेपर, ग्लू, रस्सी या कपड़े की पट्टी से भी सुंदर काम हो जाता है।";
-        return "अच्छी रोशनी में साफ़ फ़ोटो लें, शुरुआत में चीज़ का मुख्य फ़ायदा बताएं और मेहनत व स्थिति के हिसाब से सही दाम रखें।";
-      }
+      qaHeading: "💬 इस चीज़ या डिज़ाइन के बारे में कुछ भी और पूछें"
     }
   };
 
@@ -745,7 +1072,7 @@
     },
     withdrawals: [],
     notifications: [
-      { id: "NTF-1", type: "update", title: "App Update: Time-Based Creator Calc & No-Zoom Mobile Fix", detail: "Har creator ki earning waqt ke hisab se auto-calculate ho sakti hai aur mobile inputs zoom-safe kar diye gaye hain.", time: "Just now" }
+      { id: "NTF-1", type: "update", title: "App Update: 12-Step Item Guides & Smart Color/Design Tips", detail: "Har item (bottle, jar, jeans, wood, ya koi bhi cheez) ke liye 12 step-by-step instructions, رنگ اور ڈیزائن کے مشورے شامل کر دیے گئے ہیں۔", time: "Just now" }
     ],
     videoCreators: [
       { id: "VC-1", name: "Bilal Video", payout: "EasyPaisa 0300-1234567", dailyRatePKR: 250, lastCalcAt: Date.now() - 2 * 86400000, earnedPKR: 500, sentPKR: 0, note: "App intro & upcycle reel (2 days accrued)" }
@@ -891,17 +1218,37 @@
     activateTab(state.activeTab || "ai");
   }
 
+  function buildItemBundle(titleText, langCode) {
+    const lang = langCode || state.lang || "en";
+    const key = detectItemKey(titleText);
+    const pack = (ITEM_GUIDES[key] && ITEM_GUIDES[key][lang]) || ITEM_GUIDES.general[lang] || ITEM_GUIDES.general.en;
+    const cleanTitle = (titleText || "").trim() || pack.category;
+    return { key, cleanTitle, pack };
+  }
+
   function renderGuide(titleText) {
     const t = I18N[state.lang] || I18N.en;
-    const cleanTitle = (titleText || "").trim() || t.benefitTag;
-    state.currentGuide = { title: cleanTitle };
+    const { key, cleanTitle, pack } = buildItemBundle(titleText, state.lang);
+    state.currentGuide = { title: cleanTitle, key };
+
     const box = document.getElementById("guideBox");
     box.style.display = "block";
-    document.getElementById("guideTitle").textContent = cleanTitle;
-    document.getElementById("guideBenefitTag").textContent = t.benefitTag;
-    document.getElementById("guideBenefitText").textContent = t.benefitText(cleanTitle);
+    document.getElementById("guideTitle").textContent = `${cleanTitle} (${pack.category})`;
+    document.getElementById("guideBenefitTag").textContent = `${t.benefitTag} • ${pack.steps.length} Steps`;
+    document.getElementById("guideBenefitText").textContent = pack.benefit;
+
+    const lblColor = state.lang === "ur" ? "بہترین رنگ" : state.lang === "hi" ? "बेहतर रंग" : "Best Colors";
+    const lblIdeas = state.lang === "ur" ? "کیا بن سکتا ہے" : state.lang === "hi" ? "क्या बन सकता है" : "What You Can Make";
+    const lblTime = state.lang === "ur" ? "وقت اور خرچ" : state.lang === "hi" ? "समय व ख़र्च" : "Time & Cost";
+
+    document.getElementById("guideMetaStrip").innerHTML = `
+      <div class="meta-box"><strong>🎨 ${lblColor}</strong>${pack.colors}</div>
+      <div class="meta-box"><strong>💡 ${lblIdeas}</strong>${pack.ideas}</div>
+      <div class="meta-box"><strong>⏱️ ${lblTime}</strong>${pack.timeCost}</div>
+    `;
+
     document.getElementById("stepsHeading").textContent = t.stepsHeading;
-    document.getElementById("guideStepsList").innerHTML = t.steps.map(s => `<li>${s}</li>`).join("");
+    document.getElementById("guideStepsList").innerHTML = pack.steps.map(s => `<li>${s}</li>`).join("");
   }
 
   function handleSubscriptionPurchase(planKey) {
@@ -922,21 +1269,21 @@
 
   function createListing(title, price, desc) {
     const user = getUser(state.currentUserId);
-    const finalTitle = (title || "").trim() || (state.currentGuide && state.currentGuide.title) || "Upcycled Item";
+    const { pack, cleanTitle } = buildItemBundle(title || (state.currentGuide && state.currentGuide.title) || "", state.lang);
     const finalPrice = Math.max(50, Number(price) || 1000);
-    const finalDesc = (desc || "").trim() || "Practical repair/upcycle item with neat finish and zero waste.";
+    const finalDesc = (desc || "").trim() || pack.benefit;
 
     state.listings.unshift({
       id: "LST-" + Date.now().toString().slice(-4),
       sellerId: user.id,
       sellerName: user.name,
-      title: finalTitle,
+      title: cleanTitle,
       price: finalPrice,
       desc: finalDesc,
       photo: state.currentPhoto || SAMPLES.jar.svg,
       status: "Available",
       messages: [
-        { from: "Seller", text: `Hi! Feel free to message me about "${finalTitle}".` }
+        { from: "Seller", text: `Hi! Feel free to message me about "${cleanTitle}".` }
       ]
     });
     showToast("Posted to Bazaar!");
@@ -1317,6 +1664,12 @@
       state.currentPhoto = reader.result;
       photoPreview.src = state.currentPhoto;
       photoPreview.style.display = "block";
+      if (!document.getElementById("itemTitleInput").value.trim() && file.name) {
+        const cleanedName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ").trim();
+        if (cleanedName && !/^img[_-]?\d+/i.test(cleanedName)) {
+          document.getElementById("itemTitleInput").value = cleanedName;
+        }
+      }
       showToast("Photo ready!");
     };
     reader.readAsDataURL(file);
@@ -1329,13 +1682,10 @@
       state.currentPhoto = s.svg;
       photoPreview.src = s.svg;
       photoPreview.style.display = "block";
-      if (!document.getElementById("itemTitleInput").value) {
-        document.getElementById("itemTitleInput").value = s.title;
-      }
-      if (!document.getElementById("itemPriceInput").value) {
-        document.getElementById("itemPriceInput").value = s.price;
-      }
-      showToast(`Loaded: ${s.title}`);
+      document.getElementById("itemTitleInput").value = s.title;
+      document.getElementById("itemPriceInput").value = s.price;
+      renderGuide(s.title);
+      showToast(`Loaded & generated 12-step guide: ${s.title}`);
     });
   });
 
@@ -1346,6 +1696,7 @@
       return;
     }
     renderGuide(document.getElementById("itemTitleInput").value);
+    document.getElementById("guideBox").scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
   document.getElementById("postToBazaarBtn").addEventListener("click", () => {
@@ -1356,7 +1707,8 @@
     }
     const title = document.getElementById("itemTitleInput").value;
     const price = document.getElementById("itemPriceInput").value;
-    createListing(title, price, (I18N[state.lang] || I18N.en).benefitText((title || "Upcycled Item").trim() || "Upcycled Item"));
+    const { pack } = buildItemBundle(title, state.lang);
+    createListing(title, price, pack.benefit);
     activateTab("bazaar");
   });
 
@@ -1371,14 +1723,35 @@
     activateTab("owner");
   });
 
+  function buildFollowUpReply(qType, customText, itemTitle, outLang) {
+    const { pack, cleanTitle } = buildItemBundle(itemTitle || (state.currentGuide && state.currentGuide.title) || "", outLang);
+    if (outLang === "ur") {
+      if (qType === "color") return `${cleanTitle} (${pack.category}) کے لیے بہترین رنگ: ${pack.colors}۔ ایک رنگ کو بنیادی رکھیں اور دوسرے رنگ سے کنارے یا ڈیزائن کو نمایاں کریں تاکہ نظر بھٹکے نہ۔`;
+      if (qType === "tools") return `${cleanTitle} بنانے کے لیے بھاری مشینری ضروری نہیں: گھر کی قینچی، باریک ریگ مال، گلو، ڈوری/رسی اور سادہ کپڑے کے ٹکڑے سے 12 مراحل آسانی سے پورے ہو جاتے ہیں۔`;
+      if (qType === "ideas") return `${cleanTitle} سے یہ چیزیں بنائی جا سکتی ہیں: ${pack.ideas}۔ پہلے ایک آسان ڈیزائن بنائیں، پھر اس کی صاف تصویر لگا کر بازار میں پوسٹ کریں۔`;
+      return `${cleanTitle} کی قیمت اس کی محنت، مضبوطی اور فائدے کے مطابق رکھیں۔ روشن تصویر، صاف فائدہ اور "${customText || "سوال"}" کا واضح جواب خریدار کا اعتماد بڑھاتا ہے۔`;
+    }
+    if (outLang === "hi") {
+      if (qType === "color") return `${cleanTitle} (${pack.category}) के लिए बेहतर रंग: ${pack.colors}। एक मुख्य रंग रखें और दूसरे रंग से किनारा या डिज़ाइन उभारें ताकि चीज़ साफ़ और आकर्षक लगे।`;
+      if (qType === "tools") return `${cleanTitle} के लिए महंगे औज़ार ज़रूरी नहीं: साधारण कैंची, सैंडपेपर, ग्लू, रस्सी या कपड़े की पट्टी से सभी 12 चरण आसानी से पूरे किए जा सकते हैं।`;
+      if (qType === "ideas") return `${cleanTitle} से यह उपयोगी विकल्प बन सकते हैं: ${pack.ideas}। एक साफ़ डिज़ाइन तैयार करें और अच्छी फ़ोटो के साथ बाज़ार में डालें।`;
+      return `${cleanTitle} का दाम मेहनत, मजबूती और उपयोगिता के हिसाब से तय करें। साफ़ फ़ोटो और स्पष्ट फ़ायदा लिखने से खरीदार जल्दी भरोसा करते हैं।`;
+    }
+    if (qType === "color") return `For ${cleanTitle} (${pack.category}), try ${pack.colors}. Keep one dominant shade and use the accent on edges, straps, or trim so the design feels balanced and neat.`;
+    if (qType === "tools") return `No expensive tools needed for ${cleanTitle}: household scissors, fine sandpaper, glue/cord, and basic trim handle all 12 steps cleanly.`;
+    if (qType === "ideas") return `Great ideas for ${cleanTitle}: ${pack.ideas}. Pick one practical use first, finish the edges cleanly, and post a bright photo.`;
+    return `Price ${cleanTitle} fairly based on condition, time (${pack.timeCost}), and usefulness—lead with the practical benefit and show clean close-up photos (${customText || "custom question"}).`;
+  }
+
   function answerFollowUp(qType, customText) {
     if (isPaywallLocked()) {
       document.getElementById("paywallBox").style.display = "block";
       return;
     }
-    const t = I18N[state.lang] || I18N.en;
-    const qLabel = customText || (qType === "color" ? "Best colors?" : qType === "tools" ? "No special tools?" : "How to price & sell?");
-    const reply = qType ? t.followUp(qType) : `${t.followUp("sell")} (${customText})`;
+    const currentTitle = document.getElementById("itemTitleInput").value || (state.currentGuide && state.currentGuide.title) || "";
+    const outLang = wantsUrduOrHindi(customText) || state.lang || "en";
+    const qLabel = customText || (qType === "color" ? "Best colors?" : qType === "tools" ? "No special tools?" : qType === "ideas" ? "More design ideas?" : "How to price & sell?");
+    const reply = buildFollowUpReply(qType, customText, currentTitle, outLang);
     const wrap = document.getElementById("followUpAnswers");
     const div = document.createElement("div");
     div.className = "answer-bubble";
@@ -1745,10 +2118,8 @@
       if (isBtn) navBtns[j].classList.add('active');
       else navBtns[j].classList.remove('active');
     }
-    
   }
 
-  // Ensure initial visibility matches active tab
   directOpenTab('ai');
 
   document.addEventListener('click', function(e) {
@@ -1776,7 +2147,6 @@
   }, true);
 })();
 </script>
-
 
 <script>
 if ('serviceWorker' in navigator) {
